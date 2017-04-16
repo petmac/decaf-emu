@@ -39,4 +39,7 @@ createNullDriver();
 GraphicsDriver *
 createVulkanDriver();
 
+GraphicsDriver *
+createMetalDriver();
+
 } // namespace gpu

@@ -13,6 +13,9 @@ public:
 DebugUiRenderer *
 createDebugGLRenderer();
 
+DebugUiRenderer *
+createDebugMetalRenderer();
+
 void
 setDebugUiRenderer(DebugUiRenderer *renderer);
 

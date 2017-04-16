@@ -21,14 +21,6 @@ target_link_libraries(libdecaf
     ${PUGIXML_LIBRARIES}
     ${ZLIB_LINK})
 
-if(APPLE)
-    target_compile_definitions(libdecaf PUBLIC DECAF_NOGL)
-else()
-    target_link_libraries(libdecaf
-        ${GLBINDING_LIBRARIES}
-        ${OPENGL_LIBRARIES})
-endif()
-
 if(MSVC)
     target_link_libraries(libdecaf ws2_32)
     target_compile_options(libdecaf PUBLIC /wd4251)

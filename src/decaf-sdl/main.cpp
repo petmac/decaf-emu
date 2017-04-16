@@ -230,6 +230,11 @@ start(excmd::parser &parser,
          gCliLog->error("Failed to initialise Vulkan backend.");
          return -1;
       }
+   } else if (config::display::backend == "metal") {
+      if (!sdl.initMetalGraphics()) {
+         gCliLog->error("Failed to initialise Metal backend.");
+         return -1;
+      }
    } else if (config::display::backend == "opengl") {
       if (!sdl.initGlGraphics()) {
          gCliLog->error("Failed to initialise OpenGL backend.");

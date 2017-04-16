@@ -3,6 +3,7 @@
 #include "config.h"
 #include "decafsdl.h"
 #include "decafsdl_dx12.h"
+#include "decafsdl_metal.h"
 #include "decafsdl_opengl.h"
 #include "decafsdl_vulkan.h"
 
@@ -77,6 +78,25 @@ DecafSDL::initVulkanGraphics()
    return true;
 #else
    decaf_abort("Vulkan support was not included in this build");
+#endif
+}
+
+bool
+DecafSDL::initMetalGraphics()
+{
+#ifdef DECAF_METAL
+   mGraphicsDriver = new DecafSDLMetal();
+
+   if (!mGraphicsDriver->initialise(WindowWidth, WindowHeight)) {
+      gCliLog->error("Failed to create Metal graphics window");
+      return false;
+   }
+
+   sActiveGfx = "Metal";
+
+   return true;
+#else
+   decaf_abort("Metal support was not included in this build");
 #endif
 }
 

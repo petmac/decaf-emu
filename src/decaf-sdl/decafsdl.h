@@ -39,6 +39,9 @@ public:
    initVulkanGraphics();
 
    bool
+   initMetalGraphics();
+
+   bool
    initSound();
 
    bool

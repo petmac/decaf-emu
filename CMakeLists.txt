@@ -6,6 +6,7 @@ option(DECAF_BUILD_TOOLS "Build tools" OFF)
 option(DECAF_BUILD_WUT_TESTS "Build tests which rely on wut" OFF)
 option(DECAF_JIT_ALLOW_PROFILING "Build with JIT profiling support" ON)
 option(DECAF_GL "Build with OpenGL rendering support" ON)
+option(DECAF_METAL "Build with Metal rendering support" OFF)
 option(DECAF_SDL "Build with SDL support" ON)
 option(DECAF_VALGRIND "Build with Valgrind support" OFF)
 option(DECAF_VULKAN "Build with Vulkan rendering support" OFF)
@@ -31,6 +32,10 @@ endif()
 
 if(DECAF_GL)
     add_definitions(-DDECAF_GL)
+endif()
+
+if(DECAF_METAL)
+    add_definitions(-DDECAF_METAL)
 endif()
 
 if(DECAF_SDL)

@@ -1,6 +1,7 @@
 #include "gpu_graphicsdriver.h"
 
 #include "dx12/dx12_driver.h"
+#include "metal/metal_driver.h"
 #include "null/null_driver.h"
 #include "opengl/opengl_driver.h"
 #include "vulkan/vulkan_driver.h"
@@ -39,6 +40,16 @@ createVulkanDriver()
 {
 #ifdef DECAF_VULKAN
    return new vulkan::Driver {};
+#else
+   return nullptr;
+#endif
+}
+
+GraphicsDriver *
+createMetalDriver()
+{
+#ifdef DECAF_METAL
+   return new metal::Driver {};
 #else
    return nullptr;
 #endif
