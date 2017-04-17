@@ -1,11 +1,15 @@
 #ifdef DECAF_METAL
 
 #include "metal_driver.h"
+#include "metal_delegate.h"
+
+#include <MetalKit/MetalKit.h>
 
 using namespace metal;
 
 Driver::Driver()
 {
+    delegate = [[MetalDelegate alloc] init];
 }
 
 void

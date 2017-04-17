@@ -5,6 +5,12 @@ include_directories(".")
 file(GLOB_RECURSE SOURCE_FILES *.cpp)
 file(GLOB_RECURSE HEADER_FILES *.h)
 
+if(APPLE)
+   file(GLOB_RECURSE OBJCPP_FILES *.mm)
+else()
+   set(OBJCPP_FILES "")
+endif()
+
 if(MSVC)
    set(RESOURCE_FILES ${CMAKE_SOURCE_DIR}/resources/decaf-sdl.rc)
 else()
@@ -13,6 +19,7 @@ endif()
 
 add_executable(decaf-sdl
    ${SOURCE_FILES}
+   ${OBJCPP_FILES}
    ${HEADER_FILES}
    ${RESOURCE_FILES})
 

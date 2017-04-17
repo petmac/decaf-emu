@@ -2,11 +2,11 @@
 
 #ifdef DECAF_METAL
 
-#include "gpu_graphicsdriver.h"
+#include "gpu_metaldriver.h"
 
 namespace metal
 {
-    class Driver : public gpu::GraphicsDriver
+    class Driver : public gpu::MetalDriver
     {
     public:
         Driver();
@@ -18,9 +18,6 @@ namespace metal
         
         void notifyCpuFlush(void *ptr, uint32_t size) override;
         void notifyGpuFlush(void *ptr, uint32_t size) override;
-        
-    private:
-        
     };
 } // namespace metal
 

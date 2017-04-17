@@ -5,6 +5,11 @@
 #include "decafsdl_graphics.h"
 #include <memory>
 
+namespace gpu
+{
+    class MetalDriver;
+}
+
 class DecafSDLMetal : public DecafSDLGraphics
 {
 public:
@@ -27,7 +32,7 @@ public:
     getDecafDebugUiRenderer() override;
     
 protected:
-    std::unique_ptr<gpu::GraphicsDriver> mDecafDriver;
+    std::unique_ptr<gpu::MetalDriver> mDecafDriver;
     std::unique_ptr<decaf::DebugUiRenderer> mDebugUiRenderer;
 };
 

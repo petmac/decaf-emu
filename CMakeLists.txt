@@ -35,6 +35,8 @@ if(DECAF_GL)
 endif()
 
 if(DECAF_METAL)
+    find_library(METAL_LIBRARIES Metal)
+    find_library(METALKIT_LIBRARIES MetalKit)
     add_definitions(-DDECAF_METAL)
 endif()
 
@@ -71,7 +73,7 @@ else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
     if(APPLE)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -fobjc-arc")
     endif()
 endif()
 
