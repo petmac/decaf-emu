@@ -142,6 +142,14 @@ DecafSDL::run(const std::string &gamePath)
          SDL_GameControllerUpdate();
       }
 
+      {
+         std::unique_lock<std::mutex> lock { mWindowTitleToSetMutex };
+         if (!mWindowTitleToSet.empty()) {
+            SDL_SetWindowTitle(mGraphicsDriver->getWindow(), mWindowTitleToSet.c_str());
+            mWindowTitleToSet.clear();
+         }
+      }
+      
       SDL_Event event;
 
       while (SDL_PollEvent(&event)) {
@@ -344,5 +352,8 @@ DecafSDL::onGameLoaded(const decaf::GameInfo &info)
 
    // Update window title
    auto title = fmt::format("Decaf ({}) - {}", sActiveGfx, name);
-   SDL_SetWindowTitle(mGraphicsDriver->getWindow(), title.c_str());
+   {
+      std::unique_lock<std::mutex> lock { mWindowTitleToSetMutex };
+      mWindowTitleToSet = title;
+   }
 }

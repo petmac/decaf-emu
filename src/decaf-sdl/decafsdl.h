@@ -104,4 +104,6 @@ protected:
    SDL_GameController *mVpad0Controller = nullptr;
 
    bool mToggleDRC = false;
+   std::mutex mWindowTitleToSetMutex;
+   std::string mWindowTitleToSet;
 };
