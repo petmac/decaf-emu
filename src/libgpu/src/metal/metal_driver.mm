@@ -10,6 +10,7 @@ using namespace metal;
 Driver::Driver()
 {
     delegate_ = [[MetalDelegate alloc] initWithDriver:this];
+    device_ = MTLCreateSystemDefaultDevice();
 }
 
 Driver::~Driver()
@@ -20,6 +21,12 @@ id<MTKViewDelegate>
 Driver::delegate() const
 {
     return delegate_;
+}
+
+id<MTLDevice>
+Driver::device() const
+{
+    return device_;
 }
 
 void

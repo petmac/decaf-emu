@@ -14,6 +14,7 @@ namespace metal
         
         // MetalDriver
         id<MTKViewDelegate> delegate() const override;
+        id<MTLDevice> device() const override;
         
         // GraphicsDriver
         void run() override;
@@ -24,6 +25,7 @@ namespace metal
         
     private:
         id<MTKViewDelegate> delegate_ = nullptr;
+        id<MTLDevice> device_ = nullptr;
     };
 } // namespace metal
 

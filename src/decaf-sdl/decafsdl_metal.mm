@@ -7,7 +7,6 @@
 #include <libgpu/gpu_metaldriver.h>
 
 #include <SDL_syswm.h>
-#include <AppKit/AppKit.h>
 #include <MetalKit/MTKView.h>
 
 DecafSDLMetal::DecafSDLMetal()
@@ -39,8 +38,7 @@ DecafSDLMetal::initialise(int width, int height)
     SDL_GetWindowWMInfo(mWindow, &windowInfo);
     NSWindow *window = windowInfo.info.cocoa.window;
     
-    id<MTLDevice> device = MTLCreateSystemDefaultDevice();
-    MTKView *metalView = [[MTKView alloc] initWithFrame:window.contentView.bounds device:device];
+    MTKView *metalView = [[MTKView alloc] initWithFrame:window.contentView.bounds device:mDecafDriver->device()];
     metalView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     metalView.delegate = mDecafDriver->delegate();
     metalView.enableSetNeedsDisplay = NO;

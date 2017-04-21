@@ -5,6 +5,7 @@
 #include "gpu_graphicsdriver.h"
 
 @protocol MTKViewDelegate;
+@protocol MTLDevice;
 
 namespace gpu
 {
@@ -14,6 +15,7 @@ namespace gpu
         virtual ~MetalDriver() override;
         
         virtual id<MTKViewDelegate> delegate() const = 0;
+        virtual id<MTLDevice> device() const = 0;
     };
 } // namespace decaf
 
