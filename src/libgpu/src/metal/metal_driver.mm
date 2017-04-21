@@ -9,7 +9,17 @@ using namespace metal;
 
 Driver::Driver()
 {
-    delegate = [[MetalDelegate alloc] init];
+    delegate_ = [[MetalDelegate alloc] initWithDriver:this];
+}
+
+Driver::~Driver()
+{
+}
+
+id<MTKViewDelegate>
+Driver::delegate() const
+{
+    return delegate_;
 }
 
 void

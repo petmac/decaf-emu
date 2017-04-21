@@ -10,14 +10,20 @@ namespace metal
     {
     public:
         Driver();
-        virtual ~Driver() = default;
+        virtual ~Driver() override;
         
+        // MetalDriver
+        id<MTKViewDelegate> delegate() const override;
+        
+        // GraphicsDriver
         void run() override;
         void stop() override;
         float getAverageFPS() override;
-        
         void notifyCpuFlush(void *ptr, uint32_t size) override;
         void notifyGpuFlush(void *ptr, uint32_t size) override;
+        
+    private:
+        id<MTKViewDelegate> delegate_ = nullptr;
     };
 } // namespace metal
 

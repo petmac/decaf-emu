@@ -42,7 +42,7 @@ DecafSDLMetal::initialise(int width, int height)
     id<MTLDevice> device = MTLCreateSystemDefaultDevice();
     MTKView *metalView = [[MTKView alloc] initWithFrame:window.contentView.bounds device:device];
     metalView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-    metalView.delegate = mDecafDriver->delegate;
+    metalView.delegate = mDecafDriver->delegate();
     metalView.enableSetNeedsDisplay = NO;
     metalView.paused = YES;
     
