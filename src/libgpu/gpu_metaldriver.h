@@ -4,6 +4,7 @@
 
 #include "gpu_graphicsdriver.h"
 
+@protocol CAMetalDrawable;
 @protocol MTKViewDelegate;
 @protocol MTLDevice;
 
@@ -16,6 +17,7 @@ namespace gpu
         
         virtual id<MTKViewDelegate> delegate() const = 0;
         virtual id<MTLDevice> device() const = 0;
+        virtual void draw(id<CAMetalDrawable> drawable) = 0;
     };
 } // namespace decaf
 

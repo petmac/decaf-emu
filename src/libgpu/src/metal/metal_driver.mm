@@ -11,6 +11,7 @@ Driver::Driver()
 {
     delegate_ = [[MetalDelegate alloc] initWithDriver:this];
     device_ = MTLCreateSystemDefaultDevice();
+    commandQueue = [device_ newCommandQueue];
 }
 
 Driver::~Driver()
@@ -27,6 +28,22 @@ id<MTLDevice>
 Driver::device() const
 {
     return device_;
+}
+
+void
+Driver::draw(id<CAMetalDrawable> drawable)
+{
+    MTLRenderPassDescriptor *pass = [MTLRenderPassDescriptor new];
+    pass.colorAttachments[0].texture = drawable.texture;
+    pass.colorAttachments[0].loadAction = MTLLoadActionClear;
+    pass.colorAttachments[0].clearColor = MTLClearColorMake(0.0625, 0.125, 0.25, 1);
+
+    id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
+    id<MTLRenderCommandEncoder> command = [commandBuffer renderCommandEncoderWithDescriptor:pass];
+    [command endEncoding];
+    
+    [commandBuffer presentDrawable:drawable];
+    [commandBuffer commit];
 }
 
 void

@@ -1,6 +1,7 @@
 #ifdef DECAF_METAL
 
 #include "metal_delegate.h"
+#include "metal_driver.h"
 
 using namespace metal;
 
@@ -23,6 +24,8 @@ using namespace metal;
 }
 
 - (void)drawInMTKView:(nonnull MTKView *)view {
+    CAMetalLayer *layer = static_cast<CAMetalLayer *>(view.layer);
+    self.driver->draw(layer.nextDrawable);
 }
 
 @end

@@ -4,6 +4,8 @@
 
 #include "gpu_metaldriver.h"
 
+@protocol MTLCommandQueue;
+
 namespace metal
 {
     class Driver : public gpu::MetalDriver
@@ -15,6 +17,7 @@ namespace metal
         // MetalDriver
         id<MTKViewDelegate> delegate() const override;
         id<MTLDevice> device() const override;
+        void draw(id<CAMetalDrawable> drawable) override;
         
         // GraphicsDriver
         void run() override;
@@ -26,6 +29,7 @@ namespace metal
     private:
         id<MTKViewDelegate> delegate_ = nullptr;
         id<MTLDevice> device_ = nullptr;
+        id<MTLCommandQueue> commandQueue = nullptr;
     };
 } // namespace metal
 
