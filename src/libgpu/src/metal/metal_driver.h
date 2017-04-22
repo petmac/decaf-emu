@@ -4,7 +4,9 @@
 
 #include "gpu_metaldriver.h"
 
+@protocol MTLBuffer;
 @protocol MTLCommandQueue;
+@protocol MTLRenderPipelineState;
 
 namespace metal
 {
@@ -30,6 +32,8 @@ namespace metal
         id<MTKViewDelegate> delegate_ = nullptr;
         id<MTLDevice> device_ = nullptr;
         id<MTLCommandQueue> commandQueue = nullptr;
+        id<MTLBuffer> vertexBuffer = nullptr;
+        id<MTLRenderPipelineState> pipeline = nullptr;
     };
 } // namespace metal
 
