@@ -5,6 +5,7 @@
 #include "gpu_metaldriver.h"
 #include "pm4_processor.h"
 
+@protocol MTLCommandBuffer;
 @protocol MTLCommandQueue;
 
 namespace metal
@@ -31,6 +32,7 @@ namespace metal
         id<MTKViewDelegate> delegate_ = nullptr;
         id<MTLDevice> device_ = nullptr;
         id<MTLCommandQueue> commandQueue = nullptr;
+        id<MTLCommandBuffer> currentCommandBuffer = nullptr;
         
         // Pm4Processor.
         void decafSetBuffer(const DecafSetBuffer &data) override;

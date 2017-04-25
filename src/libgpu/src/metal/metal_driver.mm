@@ -38,11 +38,16 @@ Driver::device() const
 void
 Driver::draw(id<CAMetalDrawable> drawable)
 {
+    currentCommandBuffer = [commandQueue commandBuffer];
+    
     for (Item item = dequeueItem(); item.numWords > 0; item = dequeueItem())
     {
         runCommandBuffer(item.buffer, item.numWords);
         onRetire(item.context);
     }
+    
+    [currentCommandBuffer commit];
+    currentCommandBuffer = nil;
 }
 
 void
