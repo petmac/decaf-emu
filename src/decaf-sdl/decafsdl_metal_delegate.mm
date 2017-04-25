@@ -1,20 +1,17 @@
 #ifdef DECAF_METAL
 
-#include "metal_delegate.h"
-#include "metal_driver.h"
+#include "decafsdl_metal_delegate.h"
+#include <libgpu/gpu_metaldriver.h>
 
-using namespace metal;
-
-@interface MetalDelegate ()
-@property (nonatomic, readonly) Driver *driver;
-@end
+using namespace gpu;
 
 @implementation MetalDelegate
 
-- (instancetype)initWithDriver:(Driver *)driver {
+- (instancetype)init {
     self = [super init];
     if (self != nil) {
-        _driver = driver;
+        MetalDriver *metalDriver = static_cast<MetalDriver *>(createMetalDriver());
+        _driver = std::shared_ptr<MetalDriver>(metalDriver);
     }
     
     return self;

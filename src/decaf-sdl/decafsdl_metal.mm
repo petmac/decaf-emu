@@ -1,13 +1,15 @@
 #ifdef DECAF_METAL
 
 #include "decafsdl_metal.h"
+#include "decafsdl_metal_delegate.h"
 
 #include "clilog.h"
 #include <common/decaf_assert.h>
 #include <libgpu/gpu_metaldriver.h>
 
 #include <SDL_syswm.h>
-#include <MetalKit/MTKView.h>
+
+#import <MetalKit/MTKView.h>
 
 DecafSDLMetal::DecafSDLMetal()
 {
@@ -30,17 +32,15 @@ DecafSDLMetal::initialise(int width, int height)
         return false;
     }
     
-    gpu::MetalDriver *metalDriver = static_cast<gpu::MetalDriver *>(gpu::createMetalDriver());
-    decaf_check(metalDriver);
-    mDecafDriver = std::unique_ptr<gpu::MetalDriver>(metalDriver);
+    mDelegate = [MetalDelegate new];
     
     SDL_SysWMinfo windowInfo {};
     SDL_GetWindowWMInfo(mWindow, &windowInfo);
     NSWindow *window = windowInfo.info.cocoa.window;
     
-    MTKView *metalView = [[MTKView alloc] initWithFrame:window.contentView.bounds device:mDecafDriver->device()];
+    MTKView *metalView = [[MTKView alloc] initWithFrame:window.contentView.bounds device:mDelegate.driver->device()];
     metalView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-    metalView.delegate = mDecafDriver->delegate();
+    metalView.delegate = mDelegate;
     metalView.enableSetNeedsDisplay = NO;
     metalView.paused = YES;
     
@@ -71,7 +71,7 @@ DecafSDLMetal::renderFrame(Viewport &tv, Viewport &drc)
 gpu::GraphicsDriver *
 DecafSDLMetal::getDecafDriver()
 {
-    return mDecafDriver.get();
+    return mDelegate.driver.get();
 }
 
 decaf::DebugUiRenderer *

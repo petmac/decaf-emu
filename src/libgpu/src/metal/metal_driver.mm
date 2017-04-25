@@ -2,13 +2,12 @@
 
 #include "metal_driver.h"
 
-#include "metal_delegate.h"
-
 using namespace metal;
+
+#import <Metal/MTLDevice.h>
 
 Driver::Driver()
 {
-    delegate_ = [[MetalDelegate alloc] initWithDriver:this];
     device_ = MTLCreateSystemDefaultDevice();
     commandQueue = [device_ newCommandQueue];
 }

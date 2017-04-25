@@ -5,17 +5,11 @@
 #include "gpu_event.h"
 #include "gpu_ringbuffer.h"
 
-#include <Metal/MTLCommandQueue.h>
+#import <Metal/MTLCommandQueue.h>
 
 using namespace gpu;
 using namespace metal;
 using namespace ringbuffer;
-
-id<MTKViewDelegate>
-Driver::delegate() const
-{
-    return delegate_;
-}
 
 id<MTLDevice>
 Driver::device() const

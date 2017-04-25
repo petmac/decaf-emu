@@ -17,7 +17,6 @@ namespace metal
         virtual ~Driver() override;
         
         // MetalDriver
-        id<MTKViewDelegate> delegate() const override;
         id<MTLDevice> device() const override;
         void draw(id<CAMetalDrawable> drawable) override;
         
@@ -29,7 +28,6 @@ namespace metal
         void notifyGpuFlush(void *ptr, uint32_t size) override;
         
     private:
-        id<MTKViewDelegate> delegate_ = nullptr;
         id<MTLDevice> device_ = nullptr;
         id<MTLCommandQueue> commandQueue = nullptr;
         id<MTLCommandBuffer> currentCommandBuffer = nullptr;
