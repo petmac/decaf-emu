@@ -4,7 +4,7 @@
 #include "decafsdl_metal_delegate.h"
 
 #include "clilog.h"
-#include <common/decaf_assert.h>
+
 #include <libgpu/gpu_metaldriver.h>
 
 #include <SDL_syswm.h>
@@ -38,7 +38,7 @@ DecafSDLMetal::initialise(int width, int height)
     SDL_GetWindowWMInfo(mWindow, &windowInfo);
     NSWindow *window = windowInfo.info.cocoa.window;
     
-    MTKView *metalView = [[MTKView alloc] initWithFrame:window.contentView.bounds device:mDelegate.driver->device()];
+    MTKView *metalView = [[MTKView alloc] initWithFrame:window.contentView.bounds device:mDelegate.device];
     metalView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     metalView.delegate = mDelegate;
     metalView.enableSetNeedsDisplay = NO;

@@ -4,12 +4,8 @@
 
 using namespace metal;
 
-#import <Metal/MTLDevice.h>
-
 Driver::Driver()
 {
-    device_ = MTLCreateSystemDefaultDevice();
-    commandQueue = [device_ newCommandQueue];
 }
 
 Driver::~Driver()

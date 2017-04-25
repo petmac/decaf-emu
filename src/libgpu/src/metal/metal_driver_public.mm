@@ -11,10 +11,10 @@ using namespace gpu;
 using namespace metal;
 using namespace ringbuffer;
 
-id<MTLDevice>
-Driver::device() const
+void
+Driver::initialise(id<MTLCommandQueue> commandQueue)
 {
-    return device_;
+    this->commandQueue = commandQueue;
 }
 
 void

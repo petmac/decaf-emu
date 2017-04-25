@@ -14,8 +14,13 @@ using namespace gpu;
     self = [super init];
     if (self != nil) {
         MetalDriver *metalDriver = static_cast<MetalDriver *>(createMetalDriver());
+        
+        _device = MTLCreateSystemDefaultDevice();
         _driver = std::shared_ptr<MetalDriver>(metalDriver);
         _debugRenderer = std::shared_ptr<DebugUiRenderer>(createDebugMetalRenderer());
+        
+        id<MTLCommandQueue> commandQueue = [self.device newCommandQueue];
+        self.driver->initialise(commandQueue);
         self.debugRenderer->initialise();
     }
     
