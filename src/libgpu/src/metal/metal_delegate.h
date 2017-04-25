@@ -1,6 +1,7 @@
 #pragma once
 
 #import <MetalKit/MTKView.h>
+#undef MIN
 
 namespace metal {
     class Driver;

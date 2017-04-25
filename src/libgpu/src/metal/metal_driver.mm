@@ -1,48 +1,22 @@
 #ifdef DECAF_METAL
 
 #include "metal_driver.h"
+
+#include "gpu_event.h"
+#include "gpu_ringbuffer.h"
 #include "metal_delegate.h"
 
 #include <MetalKit/MetalKit.h>
 
+using namespace gpu;
 using namespace metal;
-
-static NSString *const source =
-@"#include <metal_stdlib>\n"
-@"using namespace metal;"
-@"typedef struct { float2 position;} Triangle;"
-@"typedef struct { float4 position [[position]]; } TriangleOutput;"
-@"vertex TriangleOutput VertexColor(const device Triangle *Vertices [[buffer(0)]], const uint index [[vertex_id]]) {"
-@"    TriangleOutput out;"
-@"    out.position = float4(Vertices[index].position, 0.0, 1.0);"
-@"    return out;"
-@"}"
-@"fragment half4 FragmentColor(void) {"
-@"  return half4(1.0, 0.0, 0.0, 1.0);"
-@"}";
-
-static const float triangle[3][2] = {
-    { -1, -1 },
-    { 1, -1 },
-    { 0, 1 }
-};
+using namespace ringbuffer;
 
 Driver::Driver()
 {
     delegate_ = [[MetalDelegate alloc] initWithDriver:this];
     device_ = MTLCreateSystemDefaultDevice();
     commandQueue = [device_ newCommandQueue];
-    vertexBuffer = [device_ newBufferWithBytes:&triangle length:sizeof(triangle) options:MTLResourceCPUCacheModeDefaultCache];
-    
-    NSError *error = nil;
-    id<MTLLibrary> lib = [device_ newLibraryWithSource:source options:nil error:&error];
-    
-    MTLRenderPipelineDescriptor *rpd = [MTLRenderPipelineDescriptor new];
-    rpd.colorAttachments[0].pixelFormat = MTLPixelFormatBGRA8Unorm;
-    rpd.fragmentFunction = [lib newFunctionWithName:@"FragmentColor"];
-    rpd.vertexFunction = [lib newFunctionWithName:@"VertexColor"];
-    
-    pipeline = [device_ newRenderPipelineStateWithDescriptor:rpd error:&error];
 }
 
 Driver::~Driver()
@@ -64,20 +38,11 @@ Driver::device() const
 void
 Driver::draw(id<CAMetalDrawable> drawable)
 {
-    MTLRenderPassDescriptor *pass = [MTLRenderPassDescriptor new];
-    pass.colorAttachments[0].texture = drawable.texture;
-    pass.colorAttachments[0].loadAction = MTLLoadActionClear;
-    pass.colorAttachments[0].clearColor = MTLClearColorMake(0.0625, 0.125, 0.25, 1);
-
-    id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
-    id<MTLRenderCommandEncoder> command = [commandBuffer renderCommandEncoderWithDescriptor:pass];
-    [command setRenderPipelineState:pipeline];
-    [command setVertexBuffer:vertexBuffer offset:0 atIndex:0];
-    [command drawPrimitives:MTLPrimitiveTypeTriangle vertexStart:0 vertexCount:3];
-    [command endEncoding];
-    
-    [commandBuffer presentDrawable:drawable];
-    [commandBuffer commit];
+    for (Item item = dequeueItem(); item.numWords > 0; item = dequeueItem())
+    {
+        runCommandBuffer(item.buffer, item.numWords);
+        onRetire(item.context);
+    }
 }
 
 void
@@ -105,5 +70,111 @@ void
 Driver::notifyGpuFlush(void *ptr, uint32_t size)
 {
 }
+
+void
+Driver::decafSetBuffer(const DecafSetBuffer &data)
+{
+}
+
+void
+Driver::decafCopyColorToScan(const DecafCopyColorToScan &data)
+{
+}
+
+void
+Driver::decafSwapBuffers(const DecafSwapBuffers &data)
+{
+}
+
+void
+Driver::decafCapSyncRegisters(const DecafCapSyncRegisters &data)
+{
+}
+
+void
+Driver::decafClearColor(const DecafClearColor &data)
+{
+}
+
+void
+Driver::decafClearDepthStencil(const DecafClearDepthStencil &data)
+{
+}
+
+void
+Driver::decafDebugMarker(const DecafDebugMarker &data)
+{
+}
+
+void
+Driver::decafOSScreenFlip(const DecafOSScreenFlip &data)
+{
+}
+
+void
+Driver::decafCopySurface(const DecafCopySurface &data)
+{
+}
+
+void
+Driver::decafSetSwapInterval(const DecafSetSwapInterval &data)
+{
+}
+
+void
+Driver::drawIndexAuto(const DrawIndexAuto &data)
+{
+}
+
+void
+Driver::drawIndex2(const DrawIndex2 &data)
+{
+}
+
+void
+Driver::drawIndexImmd(const DrawIndexImmd &data)
+{
+}
+
+void
+Driver::memWrite(const MemWrite &data)
+{
+}
+
+void
+Driver::eventWrite(const EventWrite &data)
+{
+}
+
+void
+Driver::eventWriteEOP(const EventWriteEOP &data)
+{
+}
+
+void
+Driver::pfpSyncMe(const PfpSyncMe &data)
+{
+}
+
+void
+Driver::streamOutBaseUpdate(const StreamOutBaseUpdate &data)
+{
+}
+
+void
+Driver::streamOutBufferUpdate(const StreamOutBufferUpdate &data)
+{
+}
+
+void
+Driver::surfaceSync(const SurfaceSync &data)
+{
+}
+
+void
+Driver::applyRegister(latte::Register reg)
+{
+}
+
 
 #endif // DECAF_METAL
