@@ -5,12 +5,19 @@
 
 #include <memory>
 
-namespace gpu {
+namespace decaf
+{
+    class DebugUiRenderer;
+}
+
+namespace gpu
+{
     class MetalDriver;
 }
 
 @interface MetalDelegate: NSObject<MTKViewDelegate>
 
 @property (nonatomic, readonly) std::shared_ptr<gpu::MetalDriver> driver;
+@property (nonatomic, readonly) std::shared_ptr<decaf::DebugUiRenderer> debugRenderer;
 
 @end

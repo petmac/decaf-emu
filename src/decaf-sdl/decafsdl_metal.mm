@@ -46,10 +46,6 @@ DecafSDLMetal::initialise(int width, int height)
     
     [window.contentView addSubview:metalView];
     
-    auto metalDebugUiRenderer = decaf::createDebugMetalRenderer();
-    decaf_check(metalDebugUiRenderer);
-    mDebugUiRenderer = std::unique_ptr<decaf::DebugUiRenderer>(metalDebugUiRenderer);
-    
     return true;
 }
 
@@ -77,7 +73,7 @@ DecafSDLMetal::getDecafDriver()
 decaf::DebugUiRenderer *
 DecafSDLMetal::getDecafDebugUiRenderer()
 {
-    return mDebugUiRenderer.get();
+    return mDelegate.debugRenderer.get();
 }
 
 #endif // DECAF_METAL

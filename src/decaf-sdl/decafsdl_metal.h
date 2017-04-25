@@ -34,7 +34,6 @@ public:
     
 protected:
     MetalDelegate *mDelegate = nullptr;
-    std::unique_ptr<decaf::DebugUiRenderer> mDebugUiRenderer;
 };
 
 #endif // DECAF_METAL
