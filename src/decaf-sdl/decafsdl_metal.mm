@@ -5,6 +5,7 @@
 
 #include "clilog.h"
 
+#include <libdecaf/decaf_metaldebugger.h>
 #include <libgpu/gpu_metaldriver.h>
 
 #include <SDL_syswm.h>

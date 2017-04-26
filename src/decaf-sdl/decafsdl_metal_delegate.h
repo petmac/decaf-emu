@@ -7,7 +7,7 @@
 
 namespace decaf
 {
-    class DebugUiRenderer;
+    class MetalDebugUiRenderer;
 }
 
 namespace gpu
@@ -21,6 +21,6 @@ namespace gpu
 
 @property (nonatomic, readonly) id<MTLDevice> device;
 @property (nonatomic, readonly) std::shared_ptr<gpu::MetalDriver> driver;
-@property (nonatomic, readonly) std::shared_ptr<decaf::DebugUiRenderer> debugRenderer;
+@property (nonatomic, readonly) std::shared_ptr<decaf::MetalDebugUiRenderer> debugRenderer;
 
 @end

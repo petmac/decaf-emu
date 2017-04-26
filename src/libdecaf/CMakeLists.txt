@@ -3,10 +3,16 @@ project(libdecaf)
 include_directories(".")
 include_directories("src")
 
-file(GLOB_RECURSE SOURCE_FILES *.cpp)
+file(GLOB_RECURSE CPP_SOURCE_FILES *.cpp)
 file(GLOB_RECURSE HEADER_FILES *.h)
 
-add_library(libdecaf STATIC ${SOURCE_FILES} ${HEADER_FILES})
+if(APPLE)
+   file(GLOB_RECURSE OBJCPP_SOURCE_FILES *.mm)
+else()
+   set(OBJCPP_SOURCE_FILES "")
+endif()
+
+add_library(libdecaf STATIC ${CPP_SOURCE_FILES} ${OBJCPP_SOURCE_FILES} ${HEADER_FILES})
 GroupSources(src)
 
 target_link_libraries(libdecaf

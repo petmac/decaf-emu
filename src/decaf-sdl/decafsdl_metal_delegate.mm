@@ -2,7 +2,7 @@
 
 #include "decafsdl_metal_delegate.h"
 
-#include <libdecaf/decaf_debugger.h>
+#include <libdecaf/decaf_metaldebugger.h>
 #include <libgpu/gpu_metaldriver.h>
 
 using namespace decaf;
@@ -14,14 +14,15 @@ using namespace gpu;
     self = [super init];
     if (self != nil) {
         MetalDriver *metalDriver = static_cast<MetalDriver *>(createMetalDriver());
+        MetalDebugUiRenderer *metalDebugRenderer = static_cast<MetalDebugUiRenderer *>(createDebugMetalRenderer());
         
         _device = MTLCreateSystemDefaultDevice();
         _driver = std::shared_ptr<MetalDriver>(metalDriver);
-        _debugRenderer = std::shared_ptr<DebugUiRenderer>(createDebugMetalRenderer());
+        _debugRenderer = std::shared_ptr<MetalDebugUiRenderer>(metalDebugRenderer);
         
         id<MTLCommandQueue> commandQueue = [self.device newCommandQueue];
         self.driver->initialise(commandQueue);
-        self.debugRenderer->initialise();
+        self.debugRenderer->initialise(commandQueue);
     }
     
     return self;

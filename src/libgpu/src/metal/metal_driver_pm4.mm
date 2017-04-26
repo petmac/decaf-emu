@@ -110,5 +110,4 @@ Driver::applyRegister(Register reg)
 {
 }
 
-
 #endif // DECAF_METAL

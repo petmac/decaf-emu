@@ -6,6 +6,7 @@ namespace decaf
 class DebugUiRenderer
 {
 public:
+   virtual ~DebugUiRenderer() = default;
    virtual void initialise() = 0;
    virtual void draw(unsigned width, unsigned height) = 0;
 };

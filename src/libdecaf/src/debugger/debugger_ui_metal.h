@@ -1,20 +1,21 @@
 #pragma once
 
-#ifdef DECAF_METAL
-
-#include "decaf_debugger.h"
+#include "decaf_metaldebugger.h"
 
 namespace debugger
 {
     namespace ui
     {
-        class RendererMetal : public decaf::DebugUiRenderer
+        class RendererMetal : public decaf::MetalDebugUiRenderer
         {
         public:
-            void initialise() override;
-            void draw(unsigned width, unsigned height)  override;
+            virtual ~RendererMetal() override;
+            
+            // MetalDebugUiRenderer
+            void initialise(id<MTLCommandQueue> commandQueue) override;
+            
+        private:
+            id<MTLCommandQueue> commandQueue = nullptr;
         };
     } // namespace ui
 } // namespace debugger
-
-#endif // DECAF_METAL
