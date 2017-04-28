@@ -8,6 +8,10 @@
 using namespace decaf;
 using namespace gpu;
 
+@interface MetalDelegate ()
+@property (nonatomic, readonly) id<MTLCommandQueue> commandQueue;
+@end
+
 @implementation MetalDelegate
 
 - (instancetype)init {
@@ -19,10 +23,10 @@ using namespace gpu;
         _device = MTLCreateSystemDefaultDevice();
         _driver = std::shared_ptr<MetalDriver>(metalDriver);
         _debugRenderer = std::shared_ptr<MetalDebugUiRenderer>(metalDebugRenderer);
+        _commandQueue = [self.device newCommandQueue];
         
-        id<MTLCommandQueue> commandQueue = [self.device newCommandQueue];
-        self.driver->initialise(commandQueue);
-        self.debugRenderer->initialise(commandQueue);
+        self.driver->initialise(_commandQueue);
+        self.debugRenderer->initialise(_device);
     }
     
     return self;
@@ -33,8 +37,21 @@ using namespace gpu;
 
 - (void)drawInMTKView:(nonnull MTKView *)view {
     CAMetalLayer *layer = static_cast<CAMetalLayer *>(view.layer);
-    self.driver->draw(layer.nextDrawable);
-    self.debugRenderer->draw(layer.bounds.size.width, layer.bounds.size.height);
+    id<CAMetalDrawable> drawable = [layer nextDrawable];
+    self.driver->draw(drawable);
+    
+    MTLRenderPassDescriptor *passDesc = [MTLRenderPassDescriptor new];
+    passDesc.colorAttachments[0].texture = drawable.texture;
+    passDesc.colorAttachments[0].loadAction = MTLLoadActionClear;
+    passDesc.colorAttachments[0].clearColor = MTLClearColorMake(0.0625, 0.125, 0.25, 1);
+    
+    id<MTLCommandBuffer> commandBuffer = [self.commandQueue commandBuffer];
+    id<MTLRenderCommandEncoder> pass = [commandBuffer renderCommandEncoderWithDescriptor:passDesc];
+    self.debugRenderer->draw(pass);
+    [pass endEncoding];
+    
+    [commandBuffer presentDrawable:drawable];
+    [commandBuffer commit];
 }
 
 @end

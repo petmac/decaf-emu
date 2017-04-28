@@ -9,9 +9,13 @@ RendererMetal::~RendererMetal()
 {
 }
 
-void RendererMetal::initialise(id<MTLCommandQueue> commandQueue)
+void RendererMetal::initialise(id<MTLDevice> device)
 {
-    this->commandQueue = commandQueue;
+    this->device = device;
+}
+
+void RendererMetal::draw(id<MTLRenderCommandEncoder> pass)
+{
 }
 
 #endif // DECAF_METAL

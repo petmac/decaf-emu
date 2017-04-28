@@ -12,10 +12,11 @@ namespace debugger
             virtual ~RendererMetal() override;
             
             // MetalDebugUiRenderer
-            void initialise(id<MTLCommandQueue> commandQueue) override;
+            void initialise(id<MTLDevice> device) override;
+            void draw(id<MTLRenderCommandEncoder> pass) override;
             
         private:
-            id<MTLCommandQueue> commandQueue = nullptr;
+            id<MTLDevice> device = nullptr;
         };
     } // namespace ui
 } // namespace debugger

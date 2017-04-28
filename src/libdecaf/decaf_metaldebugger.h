@@ -2,7 +2,8 @@
 
 #include "decaf_debugger.h"
 
-@protocol MTLCommandQueue;
+@protocol MTLDevice;
+@protocol MTLRenderCommandEncoder;
 
 namespace decaf
 {
@@ -11,7 +12,8 @@ namespace decaf
     public:
         virtual ~MetalDebugUiRenderer() override;
         
-        virtual void initialise(id<MTLCommandQueue> commandQueue) = 0;
+        virtual void initialise(id<MTLDevice> device) = 0;
+        virtual void draw(id<MTLRenderCommandEncoder> pass) = 0;
         
         // DebugUiRenderer
         void initialise() override;
