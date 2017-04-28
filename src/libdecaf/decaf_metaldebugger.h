@@ -13,7 +13,7 @@ namespace decaf
         virtual ~MetalDebugUiRenderer() override;
         
         virtual void initialise(id<MTLDevice> device) = 0;
-        virtual void draw(id<MTLRenderCommandEncoder> pass) = 0;
+        virtual void draw(unsigned width, unsigned height, id<MTLRenderCommandEncoder> pass) = 0;
         
         // DebugUiRenderer
         void initialise() override;

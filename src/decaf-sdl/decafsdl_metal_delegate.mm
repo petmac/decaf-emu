@@ -47,7 +47,7 @@ using namespace gpu;
     
     id<MTLCommandBuffer> commandBuffer = [self.commandQueue commandBuffer];
     id<MTLRenderCommandEncoder> pass = [commandBuffer renderCommandEncoderWithDescriptor:passDesc];
-    self.debugRenderer->draw(pass);
+    self.debugRenderer->draw(drawable.texture.width, drawable.texture.height, pass);
     [pass endEncoding];
     
     [commandBuffer presentDrawable:drawable];
