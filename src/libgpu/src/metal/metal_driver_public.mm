@@ -18,7 +18,7 @@ Driver::initialise(id<MTLCommandQueue> commandQueue)
 }
 
 void
-Driver::draw(id<CAMetalDrawable> drawable)
+Driver::draw()
 {
     currentCommandBuffer = [commandQueue commandBuffer];
     

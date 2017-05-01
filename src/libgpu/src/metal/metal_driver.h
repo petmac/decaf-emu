@@ -18,7 +18,7 @@ namespace metal
         
         // MetalDriver
         void initialise(id<MTLCommandQueue> commandQueue) override;
-        void draw(id<CAMetalDrawable> drawable) override;
+        void draw() override;
         
         // GraphicsDriver
         void run() override;

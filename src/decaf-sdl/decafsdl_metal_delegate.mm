@@ -36,9 +36,10 @@ using namespace gpu;
 }
 
 - (void)drawInMTKView:(nonnull MTKView *)view {
+    self.driver->draw();
+    
     CAMetalLayer *layer = static_cast<CAMetalLayer *>(view.layer);
     id<CAMetalDrawable> drawable = [layer nextDrawable];
-    self.driver->draw(drawable);
     
     MTLRenderPassDescriptor *passDesc = [MTLRenderPassDescriptor new];
     passDesc.colorAttachments[0].texture = drawable.texture;

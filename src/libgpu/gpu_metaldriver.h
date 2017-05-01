@@ -4,7 +4,6 @@
 
 #include "gpu_graphicsdriver.h"
 
-@protocol CAMetalDrawable;
 @protocol MTLCommandQueue;
 
 namespace gpu
@@ -15,7 +14,7 @@ namespace gpu
         virtual ~MetalDriver() override;
         
         virtual void initialise(id<MTLCommandQueue> commandQueue) = 0;
-        virtual void draw(id<CAMetalDrawable> drawable) = 0;
+        virtual void draw() = 0;
     };
 } // namespace decaf
 
