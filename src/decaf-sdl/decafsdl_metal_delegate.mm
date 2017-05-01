@@ -43,7 +43,7 @@ using namespace gpu;
     MTLRenderPassDescriptor *passDesc = [MTLRenderPassDescriptor new];
     passDesc.colorAttachments[0].texture = drawable.texture;
     passDesc.colorAttachments[0].loadAction = MTLLoadActionClear;
-    passDesc.colorAttachments[0].clearColor = MTLClearColorMake(0.0625, 0.125, 0.25, 1);
+    passDesc.colorAttachments[0].clearColor = MTLClearColorMake(0.7, 0.3, 0.3, 1);
     
     id<MTLCommandBuffer> commandBuffer = [self.commandQueue commandBuffer];
     id<MTLRenderCommandEncoder> pass = [commandBuffer renderCommandEncoderWithDescriptor:passDesc];
