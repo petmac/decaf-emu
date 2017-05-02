@@ -2,9 +2,9 @@
 
 #include "metal_driver.h"
 
-#include <utility>
-
 #import <Metal/MTLCommandQueue.h>
+
+#include <algorithm>
 
 using namespace latte;
 using namespace metal;
@@ -21,12 +21,13 @@ Driver::decafSetBuffer(const DecafSetBuffer &data)
     ScanBufferChain &chain = data.isTv ? tvScanBuffers : drcScanBuffers;
     NSString *labelPrefix = data.isTv ? @"TV" : @"DRC";
     
-    for (unsigned int i = 0; i < 2; ++i)
+    chain.clear();
+    for (unsigned int i = 0; i < data.numBuffers; ++i)
     {
         id<MTLTexture> texture = [commandQueue.device newTextureWithDescriptor:textureDesc];
         texture.label = [NSString stringWithFormat:@"%@ framebuffer %u", labelPrefix, i];
         
-        chain[i] = texture;
+        chain.push_back(texture);
     }
 }
 
@@ -38,8 +39,14 @@ Driver::decafCopyColorToScan(const DecafCopyColorToScan &data)
 void
 Driver::decafSwapBuffers(const DecafSwapBuffers &data)
 {
-    std::swap(tvScanBuffers.front(), tvScanBuffers.back());
-    std::swap(drcScanBuffers.front(), drcScanBuffers.back());
+    if (!tvScanBuffers.empty())
+    {
+        std::rotate(tvScanBuffers.begin(), tvScanBuffers.end() - 1, tvScanBuffers.end());
+    }
+    if (!drcScanBuffers.empty())
+    {
+        std::rotate(drcScanBuffers.begin(), drcScanBuffers.end() - 1, drcScanBuffers.end());
+    }
 }
 
 void
