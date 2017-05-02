@@ -58,6 +58,9 @@ DecafSDLMetal::shutdown()
 void
 DecafSDLMetal::renderFrame(Viewport &tv, Viewport &drc)
 {
+    mDelegate.tvViewport = CGRectMake(tv.x, tv.y, tv.width, tv.height);
+    mDelegate.drcViewport = CGRectMake(drc.x, drc.y, drc.width, drc.height);
+    
     SDL_SysWMinfo windowInfo {};
     SDL_GetWindowWMInfo(mWindow, &windowInfo);
     NSWindow *window = windowInfo.info.cocoa.window;

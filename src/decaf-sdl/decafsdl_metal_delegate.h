@@ -23,4 +23,7 @@ namespace gpu
 @property (nonatomic, readonly) std::shared_ptr<gpu::MetalDriver> driver;
 @property (nonatomic, readonly) std::shared_ptr<decaf::MetalDebugUiRenderer> debugRenderer;
 
+@property (nonatomic) CGRect tvViewport;
+@property (nonatomic) CGRect drcViewport;
+
 @end

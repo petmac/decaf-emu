@@ -35,6 +35,7 @@ if(DECAF_GL)
 endif()
 
 if(DECAF_METAL)
+    find_library(COREGRAPHICS_LIBRARIES CoreGraphics)
     find_library(METAL_LIBRARIES Metal)
     find_library(METALKIT_LIBRARIES MetalKit)
     add_definitions(-DDECAF_METAL)

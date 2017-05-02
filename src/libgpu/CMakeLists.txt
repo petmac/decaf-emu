@@ -40,6 +40,7 @@ endif()
 
 if(DECAF_METAL)
     target_link_libraries(libgpu
+        ${COREGRAPHICS_LIBRARIES}
         ${METAL_LIBRARIES}
         ${METALKIT_LIBRARIES})
 endif()

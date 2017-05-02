@@ -32,4 +32,11 @@ Driver::draw()
     currentCommandBuffer = nil;
 }
 
+void
+Driver::getFrontBuffers(id<MTLTexture> *tv, id<MTLTexture> *drc)
+{
+    *tv = tvScanBuffers.empty() ? nil : tvScanBuffers.front();
+    *drc = drcScanBuffers.empty() ? nil : drcScanBuffers.front();
+}
+
 #endif // DECAF_METAL

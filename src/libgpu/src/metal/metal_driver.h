@@ -5,8 +5,11 @@
 #include "gpu_metaldriver.h"
 #include "pm4_processor.h"
 
+#include <vector>
+
 @protocol MTLCommandBuffer;
 @protocol MTLCommandQueue;
+@protocol MTLTexture;
 
 namespace metal
 {
@@ -19,6 +22,7 @@ namespace metal
         // MetalDriver
         void initialise(id<MTLCommandQueue> commandQueue) override;
         void draw() override;
+        void getFrontBuffers(id<MTLTexture> *tv, id<MTLTexture> *drc) override;
         
         // GraphicsDriver
         void run() override;
@@ -28,8 +32,12 @@ namespace metal
         void notifyGpuFlush(void *ptr, uint32_t size) override;
         
     private:
+        typedef std::vector<id<MTLTexture>> ScanBufferChain;
+        
         id<MTLCommandQueue> commandQueue = nullptr;
         id<MTLCommandBuffer> currentCommandBuffer = nullptr;
+        ScanBufferChain tvScanBuffers;
+        ScanBufferChain drcScanBuffers;
         
         // Pm4Processor.
         void decafSetBuffer(const DecafSetBuffer &data) override;

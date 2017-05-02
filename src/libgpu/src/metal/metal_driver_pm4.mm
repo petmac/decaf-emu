@@ -2,12 +2,31 @@
 
 #include "metal_driver.h"
 
+#import <Metal/MTLCommandQueue.h>
+
 using namespace latte;
 using namespace metal;
 
 void
 Driver::decafSetBuffer(const DecafSetBuffer &data)
 {
+    MTLTextureDescriptor *textureDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatBGRA8Unorm
+                                                                                           width:data.width
+                                                                                          height:data.height
+                                                                                       mipmapped:NO];
+    textureDesc.usage = MTLTextureUsageShaderRead | MTLTextureUsageRenderTarget;
+    
+    ScanBufferChain &chain = data.isTv ? tvScanBuffers : drcScanBuffers;
+    NSString *labelPrefix = data.isTv ? @"TV" : @"DRC";
+    
+    chain.clear();
+    for (unsigned int i = 0; i < data.numBuffers; ++i)
+    {
+        id<MTLTexture> texture = [commandQueue.device newTextureWithDescriptor:textureDesc];
+        texture.label = [NSString stringWithFormat:@"%@ framebuffer %u", labelPrefix, i];
+        
+        chain.push_back(texture);
+    }
 }
 
 void
