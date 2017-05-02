@@ -2,6 +2,8 @@
 
 #include "metal_driver.h"
 
+#include <utility>
+
 #import <Metal/MTLCommandQueue.h>
 
 using namespace latte;
@@ -19,13 +21,12 @@ Driver::decafSetBuffer(const DecafSetBuffer &data)
     ScanBufferChain &chain = data.isTv ? tvScanBuffers : drcScanBuffers;
     NSString *labelPrefix = data.isTv ? @"TV" : @"DRC";
     
-    chain.clear();
-    for (unsigned int i = 0; i < data.numBuffers; ++i)
+    for (unsigned int i = 0; i < 2; ++i)
     {
         id<MTLTexture> texture = [commandQueue.device newTextureWithDescriptor:textureDesc];
         texture.label = [NSString stringWithFormat:@"%@ framebuffer %u", labelPrefix, i];
         
-        chain.push_back(texture);
+        chain[i] = texture;
     }
 }
 
@@ -37,6 +38,8 @@ Driver::decafCopyColorToScan(const DecafCopyColorToScan &data)
 void
 Driver::decafSwapBuffers(const DecafSwapBuffers &data)
 {
+    std::swap(tvScanBuffers.front(), tvScanBuffers.back());
+    std::swap(drcScanBuffers.front(), drcScanBuffers.back());
 }
 
 void

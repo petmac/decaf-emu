@@ -5,7 +5,7 @@
 #include "gpu_metaldriver.h"
 #include "pm4_processor.h"
 
-#include <vector>
+#include <array>
 
 @protocol MTLCommandBuffer;
 @protocol MTLCommandQueue;
@@ -32,7 +32,7 @@ namespace metal
         void notifyGpuFlush(void *ptr, uint32_t size) override;
         
     private:
-        typedef std::vector<id<MTLTexture>> ScanBufferChain;
+        typedef std::array<id<MTLTexture>, 2> ScanBufferChain;
         
         id<MTLCommandQueue> commandQueue = nullptr;
         id<MTLCommandBuffer> currentCommandBuffer = nullptr;
