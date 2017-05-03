@@ -2,6 +2,7 @@
 
 #include "metal_driver.h"
 
+#include "gpu_event.h"
 #include "metal_unimplemented.h"
 
 #import <Metal/MTLCommandQueue.h>
@@ -50,12 +51,14 @@ Driver::decafSwapBuffers(const DecafSwapBuffers &data)
     {
         std::rotate(drcScanBuffers.begin(), drcScanBuffers.end() - 1, drcScanBuffers.end());
     }
+    
+    gpu::onFlip();
 }
 
 void
 Driver::decafCapSyncRegisters(const DecafCapSyncRegisters &data)
 {
-    unimplemented(__FUNCTION__);
+    gpu::onSyncRegisters(mRegisters.data(), static_cast<uint32_t>(mRegisters.size()));
 }
 
 void
