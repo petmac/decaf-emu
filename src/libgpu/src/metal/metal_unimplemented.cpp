@@ -11,8 +11,7 @@ namespace metal
     
     void unimplemented(const char *name)
     {
-        const std::string name_str(name);
-        if (std::find(unimplemented_functions.begin(), unimplemented_functions.end(), name_str) == unimplemented_functions.end())
+        if (std::find(unimplemented_functions.begin(), unimplemented_functions.end(), name) == unimplemented_functions.end())
         {
             unimplemented_functions.push_back(name);
         }
