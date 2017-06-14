@@ -25,6 +25,7 @@ getCommandLineParser()
    using excmd::default_value;
    using excmd::allowed;
    using excmd::value;
+   using excmd::make_default_value;
 
    parser.global_options()
       .add_option("v,version",
@@ -58,24 +59,43 @@ getCommandLineParser()
       .add_option("display-stretch",
                   description { "Enable display stretching, aspect ratio will not be maintained." })
       .add_option("sound",
-                  description { "Enable sound output." })
-      .add_option("dx12",
-                  description { "Use DirectX 12 backend." });
+                  description { "Enable sound output." });
 
    auto input_options = parser.add_option_group("Input Options")
       .add_option("vpad0",
                   description { "Select the input device for VPAD0." },
-                  default_value<std::string> { "default_keyboard" });
+                  make_default_value(config::input::vpad0));
+
+   auto test_options = parser.add_option_group("Test Options")
+      .add_option("timeout-ms",
+                  description { "Maximum time to run for before termination in milliseconds." },
+                  make_default_value(config::test::timeout_ms))
+      .add_option("timeout-frames",
+                  description { "Maximum number of frames to render before termination." },
+                  make_default_value(config::test::timeout_frames))
+      .add_option("dump-drc-frames",
+                  description { "Dump rendered DRC frames to file." })
+      .add_option("dump-tv-frames",
+                  description { "Dump rendered TV frames to file." })
+      .add_option("dump-frames-dir",
+                  description { "Folder to place dumped frames in" },
+                  make_default_value(config::test::dump_frames_dir));
 
    auto config_options = config::getExcmdGroups(parser);
 
    auto cmdPlay = parser.add_command("play")
       .add_option_group(frontend_options)
       .add_option_group(input_options)
-      .add_argument("game directory", value<std::string> {});
+      .add_argument("target", value<std::string> {});
+
+   auto cmdTest = parser.add_command("test")
+      .add_option_group(frontend_options)
+      .add_option_group(test_options)
+      .add_argument("target", value<std::string> {});
 
    for (auto group : config_options) {
       cmdPlay.add_option_group(group);
+      cmdTest.add_option_group(group);
    }
 
    return parser;
@@ -115,11 +135,7 @@ start(excmd::parser &parser,
       std::exit(0);
    }
 
-   if (!options.has("play")) {
-      return 0;
-   }
-
-   auto gamePath = options.get<std::string>("game directory");
+   auto target = options.get<std::string>("target");
 
    // Load config file
    std::string configPath, configError;
@@ -191,8 +207,28 @@ start(excmd::parser &parser,
       config::display::backend = options.get<std::string>("backend");
    }
 
+   if (options.has("timeout-ms")) {
+      config::test::timeout_ms = options.get<int>("timeout-ms");
+   }
+
+   if (options.has("timeout-frames")) {
+      config::test::timeout_frames = options.get<int>("timeout-frames");
+   }
+
+   if (options.has("dump-drc-frames")) {
+      config::test::dump_drc_frames = true;
+   }
+
+   if (options.has("dump-tv-frames")) {
+      config::test::dump_tv_frames = true;
+   }
+
+   if (options.has("dump-frames-dir")) {
+      config::test::dump_frames_dir = options.get<std::string>("dump-frames-dir");
+   }
+
    // Initialise libdecaf logger
-   auto logFile = getPathBasename(gamePath);
+   auto logFile = getPathBasename(target);
    decaf::initialiseLogging(logFile);
 
    // Initialise frontend logger
@@ -205,7 +241,7 @@ start(excmd::parser &parser,
 
    gCliLog = std::make_shared<spdlog::logger>("decaf-cli", begin(sinks), end(sinks));
    gCliLog->set_pattern("[%l] %v");
-   gCliLog->info("Game path {}", gamePath);
+   gCliLog->info("Target {}", target);
 
    if (configError.empty()) {
       gCliLog->info("Loaded config from {}", configPath);
@@ -250,7 +286,7 @@ start(excmd::parser &parser,
       return -1;
    }
 
-   if (!sdl.run(gamePath)) {
+   if (!sdl.run(target)) {
       gCliLog->error("Failed to start game");
       return -1;
    }

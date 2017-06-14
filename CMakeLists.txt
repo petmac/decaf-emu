@@ -31,6 +31,7 @@ if(DECAF_JIT_ALLOW_PROFILING)
 endif()
 
 if(DECAF_GL)
+    find_package(OpenGL REQUIRED)
     add_definitions(-DDECAF_GL)
 endif()
 
@@ -42,7 +43,6 @@ if(DECAF_METAL)
 endif()
 
 if(DECAF_SDL)
-    find_package(OpenGL REQUIRED)
     add_definitions(-DDECAF_SDL)
 endif()
 
