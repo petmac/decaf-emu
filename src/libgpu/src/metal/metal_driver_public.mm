@@ -30,6 +30,7 @@ Driver::draw()
         onRetire(item.context);
     }
     
+    finishCurrentPass();
     [currentCommandBuffer commit];
     currentCommandBuffer = nil;
 }

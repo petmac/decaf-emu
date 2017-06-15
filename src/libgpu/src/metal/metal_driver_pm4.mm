@@ -3,7 +3,6 @@
 #include "metal_driver.h"
 
 #include "gpu_event.h"
-#include "metal_unimplemented.h"
 
 #import <Metal/MTLCommandQueue.h>
 
@@ -37,12 +36,17 @@ Driver::decafSetBuffer(const DecafSetBuffer &data)
 void
 Driver::decafCopyColorToScan(const DecafCopyColorToScan &data)
 {
-    unimplemented(__FUNCTION__);
+    startPass();
+    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [currentPass popDebugGroup];
 }
 
 void
 Driver::decafSwapBuffers(const DecafSwapBuffers &data)
 {
+    startPass();
+    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [currentPass popDebugGroup];
     finishCurrentPass();
     
     if (!tvScanBuffers.empty())
@@ -60,19 +64,27 @@ Driver::decafSwapBuffers(const DecafSwapBuffers &data)
 void
 Driver::decafCapSyncRegisters(const DecafCapSyncRegisters &data)
 {
+    startPass();
+    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [currentPass popDebugGroup];
+    
     gpu::onSyncRegisters(mRegisters.data(), static_cast<uint32_t>(mRegisters.size()));
 }
 
 void
 Driver::decafClearColor(const DecafClearColor &data)
 {
-    unimplemented(__FUNCTION__);
+    startPass();
+    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [currentPass popDebugGroup];
 }
 
 void
 Driver::decafClearDepthStencil(const DecafClearDepthStencil &data)
 {
-    unimplemented(__FUNCTION__);
+    startPass();
+    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [currentPass popDebugGroup];
 }
 
 void
@@ -85,85 +97,110 @@ Driver::decafDebugMarker(const DecafDebugMarker &data)
 void
 Driver::decafOSScreenFlip(const DecafOSScreenFlip &data)
 {
-    unimplemented(__FUNCTION__);
+    startPass();
+    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [currentPass popDebugGroup];
 }
 
 void
 Driver::decafCopySurface(const DecafCopySurface &data)
 {
-    unimplemented(__FUNCTION__);
+    startPass();
+    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [currentPass popDebugGroup];
 }
 
 void
 Driver::decafSetSwapInterval(const DecafSetSwapInterval &data)
 {
-    unimplemented(__FUNCTION__);
+    startPass();
+    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [currentPass popDebugGroup];
 }
 
 void
 Driver::drawIndexAuto(const DrawIndexAuto &data)
 {
-    unimplemented(__FUNCTION__);
+    startPass();
+    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [currentPass popDebugGroup];
 }
 
 void
 Driver::drawIndex2(const DrawIndex2 &data)
 {
-    unimplemented(__FUNCTION__);
+    startPass();
+    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [currentPass popDebugGroup];
 }
 
 void
 Driver::drawIndexImmd(const DrawIndexImmd &data)
 {
-    unimplemented(__FUNCTION__);
+    startPass();
+    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [currentPass popDebugGroup];
 }
 
 void
 Driver::memWrite(const MemWrite &data)
 {
-    unimplemented(__FUNCTION__);
+    startPass();
+    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [currentPass popDebugGroup];
 }
 
 void
 Driver::eventWrite(const EventWrite &data)
 {
-    unimplemented(__FUNCTION__);
+    startPass();
+    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [currentPass popDebugGroup];
 }
 
 void
 Driver::eventWriteEOP(const EventWriteEOP &data)
 {
-    unimplemented(__FUNCTION__);
+    startPass();
+    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [currentPass popDebugGroup];
 }
 
 void
 Driver::pfpSyncMe(const PfpSyncMe &data)
 {
-    unimplemented(__FUNCTION__);
+    startPass();
+    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [currentPass popDebugGroup];
 }
 
 void
 Driver::streamOutBaseUpdate(const StreamOutBaseUpdate &data)
 {
-    unimplemented(__FUNCTION__);
+    startPass();
+    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [currentPass popDebugGroup];
 }
 
 void
 Driver::streamOutBufferUpdate(const StreamOutBufferUpdate &data)
 {
-    unimplemented(__FUNCTION__);
+    startPass();
+    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [currentPass popDebugGroup];
 }
 
 void
 Driver::surfaceSync(const SurfaceSync &data)
 {
-    unimplemented(__FUNCTION__);
+    startPass();
+    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [currentPass popDebugGroup];
 }
 
 void
 Driver::applyRegister(Register reg)
 {
-    unimplemented(__FUNCTION__);
 }
 
 #endif // DECAF_METAL
