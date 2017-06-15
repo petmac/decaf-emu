@@ -14,6 +14,7 @@ using namespace ringbuffer;
 void
 Driver::initialise(id<MTLCommandQueue> commandQueue)
 {
+    renderState = [[MTLRenderPassDescriptor alloc] init];
     this->commandQueue = commandQueue;
 }
 

@@ -7,8 +7,10 @@
 
 #include <vector>
 
+@class MTLRenderPassDescriptor;
 @protocol MTLCommandBuffer;
 @protocol MTLCommandQueue;
+@protocol MTLRenderCommandEncoder;
 @protocol MTLTexture;
 
 namespace metal
@@ -34,8 +36,10 @@ namespace metal
     private:
         typedef std::vector<id<MTLTexture>> ScanBufferChain;
         
+        MTLRenderPassDescriptor *renderState = nullptr;
         id<MTLCommandQueue> commandQueue = nullptr;
         id<MTLCommandBuffer> currentCommandBuffer = nullptr;
+        id<MTLRenderCommandEncoder> currentPass = nullptr;
         ScanBufferChain tvScanBuffers;
         ScanBufferChain drcScanBuffers;
         
@@ -61,6 +65,10 @@ namespace metal
         void streamOutBufferUpdate(const StreamOutBufferUpdate &data) override;
         void surfaceSync(const SurfaceSync &data) override;
         void applyRegister(latte::Register reg) override;
+        
+        // Private.
+        void finishCurrentPass();
+        void startPass();
     };
 } // namespace metal
 

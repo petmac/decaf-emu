@@ -43,6 +43,8 @@ Driver::decafCopyColorToScan(const DecafCopyColorToScan &data)
 void
 Driver::decafSwapBuffers(const DecafSwapBuffers &data)
 {
+    finishCurrentPass();
+    
     if (!tvScanBuffers.empty())
     {
         std::rotate(tvScanBuffers.begin(), tvScanBuffers.end() - 1, tvScanBuffers.end());
@@ -76,7 +78,8 @@ Driver::decafClearDepthStencil(const DecafClearDepthStencil &data)
 void
 Driver::decafDebugMarker(const DecafDebugMarker &data)
 {
-    unimplemented(__FUNCTION__);
+    startPass();
+    [currentPass insertDebugSignpost:[NSString stringWithUTF8String:data.key.data()]];
 }
 
 void
