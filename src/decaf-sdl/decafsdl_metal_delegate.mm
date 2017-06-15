@@ -136,6 +136,7 @@ static void blit(id<MTLRenderCommandEncoder> pass, id<MTLTexture> source, const 
     id<MTLCommandBuffer> commandBuffer = [self.commandQueue commandBuffer];
     commandBuffer.label = @"Blit TV and DRC to window";
     id<MTLRenderCommandEncoder> pass = [commandBuffer renderCommandEncoderWithDescriptor:passDesc];
+    pass.label = commandBuffer.label;
     [pass setRenderPipelineState:self.blitPipeline];
     blit(pass, tvTexture, self.tvViewport, screenSize);
     blit(pass, drcTexture, self.drcViewport, screenSize);
