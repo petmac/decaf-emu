@@ -21,6 +21,7 @@ void
 Driver::draw()
 {
     currentCommandBuffer = [commandQueue commandBuffer];
+    currentCommandBuffer.label = @"Run GPU commands";
     
     for (Item item = dequeueItem(); item.numWords > 0; item = dequeueItem())
     {
