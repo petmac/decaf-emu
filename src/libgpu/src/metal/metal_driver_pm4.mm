@@ -36,7 +36,7 @@ Driver::decafSetBuffer(const DecafSetBuffer &data)
 void
 Driver::decafCopyColorToScan(const DecafCopyColorToScan &data)
 {
-    startPass();
+    beginPass();
     [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [currentPass popDebugGroup];
 }
@@ -44,10 +44,10 @@ Driver::decafCopyColorToScan(const DecafCopyColorToScan &data)
 void
 Driver::decafSwapBuffers(const DecafSwapBuffers &data)
 {
-    startPass();
+    beginPass();
     [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [currentPass popDebugGroup];
-    finishCurrentPass();
+    endPass();
     
     if (!tvScanBuffers.empty())
     {
@@ -64,7 +64,7 @@ Driver::decafSwapBuffers(const DecafSwapBuffers &data)
 void
 Driver::decafCapSyncRegisters(const DecafCapSyncRegisters &data)
 {
-    startPass();
+    beginPass();
     [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [currentPass popDebugGroup];
     
@@ -74,7 +74,7 @@ Driver::decafCapSyncRegisters(const DecafCapSyncRegisters &data)
 void
 Driver::decafClearColor(const DecafClearColor &data)
 {
-    startPass();
+    beginPass();
     [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [currentPass popDebugGroup];
 }
@@ -82,7 +82,7 @@ Driver::decafClearColor(const DecafClearColor &data)
 void
 Driver::decafClearDepthStencil(const DecafClearDepthStencil &data)
 {
-    startPass();
+    beginPass();
     [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [currentPass popDebugGroup];
 }
@@ -90,14 +90,14 @@ Driver::decafClearDepthStencil(const DecafClearDepthStencil &data)
 void
 Driver::decafDebugMarker(const DecafDebugMarker &data)
 {
-    startPass();
+    beginPass();
     [currentPass insertDebugSignpost:[NSString stringWithUTF8String:data.key.data()]];
 }
 
 void
 Driver::decafOSScreenFlip(const DecafOSScreenFlip &data)
 {
-    startPass();
+    beginPass();
     [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [currentPass popDebugGroup];
 }
@@ -105,7 +105,7 @@ Driver::decafOSScreenFlip(const DecafOSScreenFlip &data)
 void
 Driver::decafCopySurface(const DecafCopySurface &data)
 {
-    startPass();
+    beginPass();
     [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [currentPass popDebugGroup];
 }
@@ -113,7 +113,7 @@ Driver::decafCopySurface(const DecafCopySurface &data)
 void
 Driver::decafSetSwapInterval(const DecafSetSwapInterval &data)
 {
-    startPass();
+    beginPass();
     [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [currentPass popDebugGroup];
 }
@@ -121,7 +121,7 @@ Driver::decafSetSwapInterval(const DecafSetSwapInterval &data)
 void
 Driver::drawIndexAuto(const DrawIndexAuto &data)
 {
-    startPass();
+    beginPass();
     [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [currentPass popDebugGroup];
 }
@@ -129,7 +129,7 @@ Driver::drawIndexAuto(const DrawIndexAuto &data)
 void
 Driver::drawIndex2(const DrawIndex2 &data)
 {
-    startPass();
+    beginPass();
     [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [currentPass popDebugGroup];
 }
@@ -137,7 +137,7 @@ Driver::drawIndex2(const DrawIndex2 &data)
 void
 Driver::drawIndexImmd(const DrawIndexImmd &data)
 {
-    startPass();
+    beginPass();
     [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [currentPass popDebugGroup];
 }
@@ -145,7 +145,7 @@ Driver::drawIndexImmd(const DrawIndexImmd &data)
 void
 Driver::memWrite(const MemWrite &data)
 {
-    startPass();
+    beginPass();
     [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [currentPass popDebugGroup];
 }
@@ -153,7 +153,7 @@ Driver::memWrite(const MemWrite &data)
 void
 Driver::eventWrite(const EventWrite &data)
 {
-    startPass();
+    beginPass();
     [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [currentPass popDebugGroup];
 }
@@ -161,7 +161,7 @@ Driver::eventWrite(const EventWrite &data)
 void
 Driver::eventWriteEOP(const EventWriteEOP &data)
 {
-    startPass();
+    beginPass();
     [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [currentPass popDebugGroup];
 }
@@ -169,7 +169,7 @@ Driver::eventWriteEOP(const EventWriteEOP &data)
 void
 Driver::pfpSyncMe(const PfpSyncMe &data)
 {
-    startPass();
+    beginPass();
     [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [currentPass popDebugGroup];
 }
@@ -177,7 +177,7 @@ Driver::pfpSyncMe(const PfpSyncMe &data)
 void
 Driver::streamOutBaseUpdate(const StreamOutBaseUpdate &data)
 {
-    startPass();
+    beginPass();
     [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [currentPass popDebugGroup];
 }
@@ -185,7 +185,7 @@ Driver::streamOutBaseUpdate(const StreamOutBaseUpdate &data)
 void
 Driver::streamOutBufferUpdate(const StreamOutBufferUpdate &data)
 {
-    startPass();
+    beginPass();
     [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [currentPass popDebugGroup];
 }
@@ -193,7 +193,7 @@ Driver::streamOutBufferUpdate(const StreamOutBufferUpdate &data)
 void
 Driver::surfaceSync(const SurfaceSync &data)
 {
-    startPass();
+    beginPass();
     [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [currentPass popDebugGroup];
 }

@@ -6,15 +6,7 @@
 
 using namespace metal;
 
-void Driver::finishCurrentPass()
-{
-    if (currentPass != nullptr) {
-        [currentPass endEncoding];
-        currentPass = nullptr;
-    }
-}
-
-void Driver::startPass()
+void Driver::beginPass()
 {
     if (currentPass != nullptr) {
         return;
@@ -26,6 +18,14 @@ void Driver::startPass()
     
     currentPass = [currentCommandBuffer renderCommandEncoderWithDescriptor:renderState];
     currentPass.label = @"GPU command batch";
+}
+
+void Driver::endPass()
+{
+    if (currentPass != nullptr) {
+        [currentPass endEncoding];
+        currentPass = nullptr;
+    }
 }
 
 #endif // DECAF_METAL

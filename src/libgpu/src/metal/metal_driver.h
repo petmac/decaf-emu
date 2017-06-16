@@ -67,8 +67,8 @@ namespace metal
         void applyRegister(latte::Register reg) override;
         
         // Pass management.
-        void finishCurrentPass();
-        void startPass();
+        void beginPass();
+        void endPass();
     };
 } // namespace metal
 
