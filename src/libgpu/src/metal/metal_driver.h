@@ -66,7 +66,7 @@ namespace metal
         void surfaceSync(const SurfaceSync &data) override;
         void applyRegister(latte::Register reg) override;
         
-        // Private.
+        // Pass management.
         void finishCurrentPass();
         void startPass();
     };
