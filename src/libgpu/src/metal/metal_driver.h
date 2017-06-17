@@ -9,8 +9,8 @@
 
 @class MTLRenderPassDescriptor;
 @protocol MTLCommandBuffer;
+@protocol MTLCommandEncoder;
 @protocol MTLCommandQueue;
-@protocol MTLRenderCommandEncoder;
 @protocol MTLTexture;
 
 namespace metal
@@ -39,7 +39,7 @@ namespace metal
         MTLRenderPassDescriptor *renderState = nullptr;
         id<MTLCommandQueue> commandQueue = nullptr;
         id<MTLCommandBuffer> currentCommandBuffer = nullptr;
-        id<MTLRenderCommandEncoder> currentPass = nullptr;
+        id<MTLCommandEncoder> currentPass = nullptr;
         ScanBufferChain tvScanBuffers;
         ScanBufferChain drcScanBuffers;
         

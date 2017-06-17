@@ -2,7 +2,8 @@
 
 #include "metal_driver.h"
 
-#import <Metal/MTLRenderCommandEncoder.h>
+#import <Metal/MTLBlitCommandEncoder.h>
+#import <Metal/MTLCommandBuffer.h>
 
 using namespace metal;
 
@@ -12,11 +13,7 @@ void Driver::beginPass()
         return;
     }
     
-    if (renderState.colorAttachments[0].texture == nullptr) {
-        renderState.colorAttachments[0].texture = tvScanBuffers.back();
-    }
-    
-    currentPass = [currentCommandBuffer renderCommandEncoderWithDescriptor:renderState];
+    currentPass = [currentCommandBuffer blitCommandEncoder];
     currentPass.label = @"GPU command batch";
 }
 
