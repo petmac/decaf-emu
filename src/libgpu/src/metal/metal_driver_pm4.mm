@@ -74,9 +74,18 @@ Driver::decafCapSyncRegisters(const DecafCapSyncRegisters &data)
 void
 Driver::decafClearColor(const DecafClearColor &data)
 {
-    beginPass();
-    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
-    [currentPass popDebugGroup];
+    endPass();
+    
+    MTLRenderPassDescriptor *desc = [[MTLRenderPassDescriptor alloc] init];
+    MTLRenderPassColorAttachmentDescriptor *attachment = desc.colorAttachments[0];
+    attachment.texture = getColorBuffer(data.cb_color_base, data.cb_color_size, data.cb_color_info);
+    attachment.loadAction = MTLLoadActionClear;
+    attachment.clearColor = MTLClearColorMake(data.red, data.green, data.blue, data.alpha);
+    attachment.storeAction = MTLStoreActionStore;
+    
+    id<MTLRenderCommandEncoder> pass = [currentCommandBuffer renderCommandEncoderWithDescriptor:desc];
+    pass.label = [NSString stringWithUTF8String:__FUNCTION__];
+    [pass endEncoding];
 }
 
 void

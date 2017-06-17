@@ -66,6 +66,9 @@ namespace metal
         void surfaceSync(const SurfaceSync &data) override;
         void applyRegister(latte::Register reg) override;
         
+        // Buffer management.
+        id<MTLTexture> getColorBuffer(latte::CB_COLORN_BASE base, latte::CB_COLORN_SIZE size, latte::CB_COLORN_INFO info);
+        
         // Pass management.
         void beginPass();
         void endPass();
