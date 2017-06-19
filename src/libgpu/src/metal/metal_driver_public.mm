@@ -4,10 +4,12 @@
 
 #include "gpu_event.h"
 #include "gpu_ringbuffer.h"
+#include "latte/latte_constants.h"
 
 #import <Metal/MTLCommandQueue.h>
 
 using namespace gpu;
+using namespace latte;
 using namespace metal;
 using namespace ringbuffer;
 
@@ -16,6 +18,16 @@ Driver::initialise(id<MTLCommandQueue> commandQueue)
 {
     renderState = [[MTLRenderPassDescriptor alloc] init];
     this->commandQueue = commandQueue;
+    
+    for (size_t i = 0; i < MaxRenderTargets; ++i) {
+        MTLRenderPassColorAttachmentDescriptor *const attachment = renderState.colorAttachments[i];
+        attachment.loadAction = MTLLoadActionLoad;
+        attachment.storeAction = MTLStoreActionStore;
+    }
+    
+    for (auto i = 0u; i < mRegisters.size(); ++i) {
+        applyRegister(static_cast<latte::Register>(i * 4));
+    }
 }
 
 void

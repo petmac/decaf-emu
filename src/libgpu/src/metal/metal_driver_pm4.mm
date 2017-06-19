@@ -144,7 +144,7 @@ Driver::decafSetSwapInterval(const DecafSetSwapInterval &data)
 void
 Driver::drawIndexAuto(const DrawIndexAuto &data)
 {
-    beginPass();
+    beginRenderPass();
     [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [pass popDebugGroup];
 }
@@ -152,7 +152,7 @@ Driver::drawIndexAuto(const DrawIndexAuto &data)
 void
 Driver::drawIndex2(const DrawIndex2 &data)
 {
-    beginPass();
+    beginRenderPass();
     [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [pass popDebugGroup];
 }
@@ -160,7 +160,7 @@ Driver::drawIndex2(const DrawIndex2 &data)
 void
 Driver::drawIndexImmd(const DrawIndexImmd &data)
 {
-    beginPass();
+    beginRenderPass();
     [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     [pass popDebugGroup];
 }
@@ -224,6 +224,14 @@ Driver::surfaceSync(const SurfaceSync &data)
 void
 Driver::applyRegister(Register reg)
 {
+    endPass();
+ 
+    const uint32_t value = getRegister<uint32_t>(reg);
+    
+    switch (reg) {
+        case latte::Register_::CB_COLOR0_BASE:
+            break;
+    }
 }
 
 #endif // DECAF_METAL
