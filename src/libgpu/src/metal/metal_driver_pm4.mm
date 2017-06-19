@@ -4,6 +4,7 @@
 
 #include "gpu_event.h"
 
+#import <Metal/MTLBlitCommandEncoder.h>
 #import <Metal/MTLCommandQueue.h>
 
 #include <algorithm>
@@ -36,17 +37,30 @@ Driver::decafSetBuffer(const DecafSetBuffer &data)
 void
 Driver::decafCopyColorToScan(const DecafCopyColorToScan &data)
 {
-    beginPass();
-    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
-    [currentPass popDebugGroup];
+    beginBlitPass();
+    [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    
+    const id<MTLTexture> src = getColorBuffer(data.cb_color_base, data.cb_color_size, data.cb_color_info);
+    const id<MTLTexture> dst = (data.scanTarget == 1) ? tvScanBuffers.back() : drcScanBuffers.back();
+    
+    [blitPass copyFromTexture:src
+                  sourceSlice:data.cb_color_view.SLICE_START()
+                  sourceLevel:0
+                 sourceOrigin:MTLOriginMake(0, 0, 0)
+                   sourceSize:MTLSizeMake(data.width, data.height, 1)
+                    toTexture:dst
+             destinationSlice:0
+             destinationLevel:0
+            destinationOrigin:MTLOriginMake(0, 0, 0)];
+    [pass popDebugGroup];
 }
 
 void
 Driver::decafSwapBuffers(const DecafSwapBuffers &data)
 {
     beginPass();
-    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
-    [currentPass popDebugGroup];
+    [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [pass popDebugGroup];
     endPass();
     
     if (!tvScanBuffers.empty())
@@ -65,8 +79,8 @@ void
 Driver::decafCapSyncRegisters(const DecafCapSyncRegisters &data)
 {
     beginPass();
-    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
-    [currentPass popDebugGroup];
+    [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [pass popDebugGroup];
     
     gpu::onSyncRegisters(mRegisters.data(), static_cast<uint32_t>(mRegisters.size()));
 }
@@ -92,119 +106,119 @@ void
 Driver::decafClearDepthStencil(const DecafClearDepthStencil &data)
 {
     beginPass();
-    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
-    [currentPass popDebugGroup];
+    [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [pass popDebugGroup];
 }
 
 void
 Driver::decafDebugMarker(const DecafDebugMarker &data)
 {
     beginPass();
-    [currentPass insertDebugSignpost:[NSString stringWithUTF8String:data.key.data()]];
+    [pass insertDebugSignpost:[NSString stringWithUTF8String:data.key.data()]];
 }
 
 void
 Driver::decafOSScreenFlip(const DecafOSScreenFlip &data)
 {
     beginPass();
-    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
-    [currentPass popDebugGroup];
+    [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [pass popDebugGroup];
 }
 
 void
 Driver::decafCopySurface(const DecafCopySurface &data)
 {
     beginPass();
-    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
-    [currentPass popDebugGroup];
+    [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [pass popDebugGroup];
 }
 
 void
 Driver::decafSetSwapInterval(const DecafSetSwapInterval &data)
 {
     beginPass();
-    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
-    [currentPass popDebugGroup];
+    [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [pass popDebugGroup];
 }
 
 void
 Driver::drawIndexAuto(const DrawIndexAuto &data)
 {
     beginPass();
-    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
-    [currentPass popDebugGroup];
+    [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [pass popDebugGroup];
 }
 
 void
 Driver::drawIndex2(const DrawIndex2 &data)
 {
     beginPass();
-    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
-    [currentPass popDebugGroup];
+    [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [pass popDebugGroup];
 }
 
 void
 Driver::drawIndexImmd(const DrawIndexImmd &data)
 {
     beginPass();
-    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
-    [currentPass popDebugGroup];
+    [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [pass popDebugGroup];
 }
 
 void
 Driver::memWrite(const MemWrite &data)
 {
     beginPass();
-    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
-    [currentPass popDebugGroup];
+    [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [pass popDebugGroup];
 }
 
 void
 Driver::eventWrite(const EventWrite &data)
 {
     beginPass();
-    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
-    [currentPass popDebugGroup];
+    [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [pass popDebugGroup];
 }
 
 void
 Driver::eventWriteEOP(const EventWriteEOP &data)
 {
     beginPass();
-    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
-    [currentPass popDebugGroup];
+    [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [pass popDebugGroup];
 }
 
 void
 Driver::pfpSyncMe(const PfpSyncMe &data)
 {
     beginPass();
-    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
-    [currentPass popDebugGroup];
+    [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [pass popDebugGroup];
 }
 
 void
 Driver::streamOutBaseUpdate(const StreamOutBaseUpdate &data)
 {
     beginPass();
-    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
-    [currentPass popDebugGroup];
+    [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [pass popDebugGroup];
 }
 
 void
 Driver::streamOutBufferUpdate(const StreamOutBufferUpdate &data)
 {
     beginPass();
-    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
-    [currentPass popDebugGroup];
+    [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [pass popDebugGroup];
 }
 
 void
 Driver::surfaceSync(const SurfaceSync &data)
 {
     beginPass();
-    [currentPass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
-    [currentPass popDebugGroup];
+    [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
+    [pass popDebugGroup];
 }
 
 void

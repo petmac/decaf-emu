@@ -5,12 +5,16 @@
 #include "gpu_metaldriver.h"
 #include "pm4_processor.h"
 
+#include <map>
+#include <tuple>
 #include <vector>
 
 @class MTLRenderPassDescriptor;
+@protocol MTLBlitCommandEncoder;
 @protocol MTLCommandBuffer;
 @protocol MTLCommandEncoder;
 @protocol MTLCommandQueue;
+@protocol MTLRenderCommandEncoder;
 @protocol MTLTexture;
 
 namespace metal
@@ -35,13 +39,18 @@ namespace metal
         
     private:
         typedef std::vector<id<MTLTexture>> ScanBufferChain;
+        typedef std::tuple<uint32_t, uint32_t, uint32_t> ColorBufferKey;
+        typedef std::map<ColorBufferKey, id<MTLTexture>> ColorBuffers;
         
         MTLRenderPassDescriptor *renderState = nullptr;
         id<MTLCommandQueue> commandQueue = nullptr;
         id<MTLCommandBuffer> currentCommandBuffer = nullptr;
-        id<MTLCommandEncoder> currentPass = nullptr;
+        id<MTLBlitCommandEncoder> blitPass = nullptr;
+        id<MTLRenderCommandEncoder> renderPass = nullptr;
+        id<MTLCommandEncoder> pass = nullptr;
         ScanBufferChain tvScanBuffers;
         ScanBufferChain drcScanBuffers;
+        ColorBuffers colorBuffers;
         
         // Pm4Processor.
         void decafSetBuffer(const DecafSetBuffer &data) override;
@@ -70,6 +79,8 @@ namespace metal
         id<MTLTexture> getColorBuffer(latte::CB_COLORN_BASE base, latte::CB_COLORN_SIZE size, latte::CB_COLORN_INFO info);
         
         // Pass management.
+        void beginBlitPass();
+        void beginRenderPass();
         void beginPass();
         void endPass();
     };

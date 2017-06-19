@@ -4,25 +4,57 @@
 
 #import <Metal/MTLBlitCommandEncoder.h>
 #import <Metal/MTLCommandBuffer.h>
+#import <Metal/MTLRenderCommandEncoder.h>
 
 using namespace metal;
 
-void Driver::beginPass()
+void Driver::beginBlitPass()
 {
-    if (currentPass != nullptr) {
+    if (blitPass != nullptr) {
         return;
     }
     
-    currentPass = [currentCommandBuffer blitCommandEncoder];
-    currentPass.label = @"GPU command batch";
+    [pass endEncoding];
+    
+    blitPass = [currentCommandBuffer blitCommandEncoder];
+    blitPass.label = @"Blit pass";
+    renderPass = nullptr;
+    pass = blitPass;
+}
+
+void Driver::beginRenderPass()
+{
+    if (renderPass != nullptr) {
+        return;
+    }
+    
+    [pass endEncoding];
+    
+    blitPass = nullptr;
+    renderPass = [currentCommandBuffer renderCommandEncoderWithDescriptor:renderState];
+    renderPass.label = @"Render pass";
+    pass = renderPass;
+}
+
+void Driver::beginPass()
+{
+    if (pass != nullptr) {
+        return;
+    }
+    
+    beginBlitPass();
 }
 
 void Driver::endPass()
 {
-    if (currentPass != nullptr) {
-        [currentPass endEncoding];
-        currentPass = nullptr;
+    if (pass == nullptr) {
+        return;
     }
+    
+    [pass endEncoding];
+    blitPass = nullptr;
+    renderPass = nullptr;
+    pass = nullptr;
 }
 
 #endif // DECAF_METAL
