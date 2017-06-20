@@ -5,7 +5,6 @@
 #include "latte/latte_formats.h"
 
 #import <Metal/MTLCommandQueue.h>
-#import <Metal/MTLDevice.h>
 
 using namespace latte;
 using namespace metal;

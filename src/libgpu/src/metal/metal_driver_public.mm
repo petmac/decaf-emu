@@ -16,11 +16,12 @@ using namespace ringbuffer;
 void
 Driver::initialise(id<MTLCommandQueue> commandQueue)
 {
-    renderState = [[MTLRenderPassDescriptor alloc] init];
+    renderPassDesc = [[MTLRenderPassDescriptor alloc] init];
+    renderPipelineDesc = [[MTLRenderPipelineDescriptor alloc] init];
     this->commandQueue = commandQueue;
     
     for (size_t i = 0; i < MaxRenderTargets; ++i) {
-        MTLRenderPassColorAttachmentDescriptor *const attachment = renderState.colorAttachments[i];
+        MTLRenderPassColorAttachmentDescriptor *const attachment = renderPassDesc.colorAttachments[i];
         attachment.loadAction = MTLLoadActionLoad;
         attachment.storeAction = MTLStoreActionStore;
     }

@@ -9,13 +9,12 @@
 #include <tuple>
 #include <vector>
 
-@class MTLRenderPassDescriptor;
+#import <Metal/MTLStageInputOutputDescriptor.h>
+
 @protocol MTLBlitCommandEncoder;
 @protocol MTLCommandBuffer;
 @protocol MTLCommandEncoder;
-@protocol MTLCommandQueue;
 @protocol MTLRenderCommandEncoder;
-@protocol MTLTexture;
 
 namespace metal
 {
@@ -42,7 +41,8 @@ namespace metal
         typedef std::tuple<uint32_t, uint32_t, uint32_t> ColorBufferKey;
         typedef std::map<ColorBufferKey, id<MTLTexture>> ColorBuffers;
         
-        MTLRenderPassDescriptor *renderState = nullptr;
+        MTLRenderPassDescriptor *renderPassDesc = nullptr;
+        MTLRenderPipelineDescriptor *renderPipelineDesc = nullptr;
         id<MTLCommandQueue> commandQueue = nullptr;
         id<MTLCommandBuffer> currentCommandBuffer = nullptr;
         id<MTLBlitCommandEncoder> blitPass = nullptr;
@@ -51,6 +51,7 @@ namespace metal
         ScanBufferChain tvScanBuffers;
         ScanBufferChain drcScanBuffers;
         ColorBuffers colorBuffers;
+        bool renderPipelineStateSet = false;
         
         // Pm4Processor.
         void decafSetBuffer(const DecafSetBuffer &data) override;
@@ -83,6 +84,10 @@ namespace metal
         void beginRenderPass();
         void beginPass();
         void endPass();
+        
+        // Primitive rendering.
+        template <typename IndexType>
+        void drawIndexedPrimities(const IndexType *src, NSUInteger count, MTLIndexType indexType);
     };
 } // namespace metal
 
