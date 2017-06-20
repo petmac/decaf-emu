@@ -18,7 +18,7 @@ void Driver::beginBlitPass()
     
     [pass endEncoding];
     
-    blitPass = [currentCommandBuffer blitCommandEncoder];
+    blitPass = [commandBuffer blitCommandEncoder];
     blitPass.label = @"Blit pass";
     renderPass = nullptr;
     pass = blitPass;
@@ -39,14 +39,14 @@ void Driver::beginRenderPass()
         }
         
         blitPass = nullptr;
-        renderPass = [currentCommandBuffer renderCommandEncoderWithDescriptor:renderPassDesc];
+        renderPass = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDesc];
         renderPass.label = @"Render pass";
         pass = renderPass;
         renderPipelineStateSet = false;
     }
     
     if (!renderPipelineStateSet) {
-        id<MTLDevice> device = currentCommandBuffer.device;
+        id<MTLDevice> device = commandBuffer.device;
         NSError *error = nil;
         id<MTLRenderPipelineState> pipelineState = [device newRenderPipelineStateWithDescriptor:renderPipelineDesc
                                                                                           error:&error];

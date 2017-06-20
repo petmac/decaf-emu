@@ -97,7 +97,7 @@ Driver::decafClearColor(const DecafClearColor &data)
     attachment.clearColor = MTLClearColorMake(data.red, data.green, data.blue, data.alpha);
     attachment.storeAction = MTLStoreActionStore;
     
-    id<MTLRenderCommandEncoder> pass = [currentCommandBuffer renderCommandEncoderWithDescriptor:desc];
+    id<MTLRenderCommandEncoder> pass = [commandBuffer renderCommandEncoderWithDescriptor:desc];
     pass.label = [NSString stringWithUTF8String:__FUNCTION__];
     [pass endEncoding];
 }

@@ -34,8 +34,8 @@ Driver::initialise(id<MTLCommandQueue> commandQueue)
 void
 Driver::draw()
 {
-    currentCommandBuffer = [commandQueue commandBuffer];
-    currentCommandBuffer.label = @"Run GPU commands";
+    commandBuffer = [commandQueue commandBuffer];
+    commandBuffer.label = @"Run GPU commands";
     
     for (Item item = dequeueItem(); item.numWords > 0; item = dequeueItem())
     {
@@ -44,8 +44,8 @@ Driver::draw()
     }
     
     endPass();
-    [currentCommandBuffer commit];
-    currentCommandBuffer = nil;
+    [commandBuffer commit];
+    commandBuffer = nil;
 }
 
 void

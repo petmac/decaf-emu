@@ -44,7 +44,7 @@ namespace metal
         MTLRenderPassDescriptor *renderPassDesc = nullptr;
         MTLRenderPipelineDescriptor *renderPipelineDesc = nullptr;
         id<MTLCommandQueue> commandQueue = nullptr;
-        id<MTLCommandBuffer> currentCommandBuffer = nullptr;
+        id<MTLCommandBuffer> commandBuffer = nullptr;
         id<MTLBlitCommandEncoder> blitPass = nullptr;
         id<MTLRenderCommandEncoder> renderPass = nullptr;
         id<MTLCommandEncoder> pass = nullptr;
