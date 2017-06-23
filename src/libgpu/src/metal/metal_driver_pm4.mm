@@ -251,13 +251,10 @@ Driver::surfaceSync(const SurfaceSync &data)
 void
 Driver::applyRegister(Register reg)
 {
-    renderPipelineStateSet = false;
- 
-    const uint32_t value = getRegister<uint32_t>(reg);
-    
     switch (reg) {
-        case Register_::CB_COLOR0_BASE:
-            break;
+#define IGNORE(name) case Register_::name: break;
+#include "metal_driver_registers.h"
+#undef IGNORE
     }
 }
 
