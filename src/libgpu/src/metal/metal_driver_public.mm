@@ -34,18 +34,21 @@ Driver::initialise(id<MTLCommandQueue> commandQueue)
 void
 Driver::draw()
 {
-    commandBuffer = [commandQueue commandBuffer];
-    commandBuffer.label = @"Run GPU commands";
-    
-    for (Item item = dequeueItem(); item.numWords > 0; item = dequeueItem())
-    {
-        runCommandBuffer(item.buffer, item.numWords);
-        onRetire(item.context);
+    Item item = dequeueItem();
+    if (item.numWords > 0) {
+        commandBuffer = [commandQueue commandBuffer];
+        commandBuffer.label = @"Run GPU commands";
+        
+        do {
+            runCommandBuffer(item.buffer, item.numWords);
+            onRetire(item.context);
+            item = dequeueItem();
+        } while (item.numWords > 0);
+        
+        endPass();
+        [commandBuffer commit];
+        commandBuffer = nil;
     }
-    
-    endPass();
-    [commandBuffer commit];
-    commandBuffer = nil;
 }
 
 void
