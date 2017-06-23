@@ -22,7 +22,7 @@ Driver::drawIndexedPrimities(const IndexType *src, NSUInteger count, MTLIndexTyp
     uint8_t temp[4096];
     const NSUInteger length = count * sizeof(IndexType);
     id<MTLBuffer> indexBuffer = [commandQueue.device newBufferWithLength:length
-                                                                 options:MTLResourceOptionCPUCacheModeDefault];
+                                                                 options:MTLCPUCacheModeWriteCombined];
     std::transform(&src[0],
                    &src[count],
                    static_cast<IndexType *>(indexBuffer.contents),
