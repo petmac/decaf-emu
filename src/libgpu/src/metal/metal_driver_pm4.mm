@@ -251,12 +251,12 @@ Driver::surfaceSync(const SurfaceSync &data)
 void
 Driver::applyRegister(Register reg)
 {
-    endPass();
+    renderPipelineStateSet = false;
  
     const uint32_t value = getRegister<uint32_t>(reg);
     
     switch (reg) {
-        case latte::Register_::CB_COLOR0_BASE:
+        case Register_::CB_COLOR0_BASE:
             break;
     }
 }

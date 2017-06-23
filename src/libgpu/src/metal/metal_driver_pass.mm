@@ -5,7 +5,7 @@
 #include "latte/latte_constants.h"
 
 #import <Metal/MTLBlitCommandEncoder.h>
-#import <Metal/MTLRenderCommandEncoder.h>
+#import <Metal/MTLRenderPipeline.h>
 
 using namespace latte;
 using namespace metal;
@@ -33,9 +33,13 @@ void Driver::beginRenderPass()
             const CB_COLORN_BASE base = getRegister<CB_COLORN_BASE>(Register::CB_COLOR0_BASE + (i * 4));
             const CB_COLORN_SIZE size = getRegister<CB_COLORN_SIZE>(Register::CB_COLOR0_SIZE + (i * 4));
             const CB_COLORN_INFO info = getRegister<CB_COLORN_INFO>(Register::CB_COLOR0_INFO + (i * 4));
+            const id<MTLTexture> colorBuffer = (size.PITCH_TILE_MAX() != 0) ? getColorBuffer(base, size, info) : nullptr;
             
-            MTLRenderPassColorAttachmentDescriptor *const attachment = renderPassDesc.colorAttachments[i];
-            attachment.texture = (size.PITCH_TILE_MAX() != 0) ? getColorBuffer(base, size, info) : nullptr;
+            MTLRenderPassColorAttachmentDescriptor *const passColorAttachment = renderPassDesc.colorAttachments[i];
+            passColorAttachment.texture = colorBuffer;
+            
+            MTLRenderPipelineColorAttachmentDescriptor *const pipelineColorAttachment = renderPipelineDesc.colorAttachments[i];
+            pipelineColorAttachment.pixelFormat = colorBuffer.pixelFormat;
         }
         
         blitPass = nullptr;
@@ -46,6 +50,9 @@ void Driver::beginRenderPass()
     }
     
     if (!renderPipelineStateSet) {
+        renderPipelineDesc.fragmentFunction = getFragmentShader();
+        renderPipelineDesc.vertexFunction = getVertexShader();
+        
         id<MTLDevice> device = commandBuffer.device;
         NSError *error = nil;
         id<MTLRenderPipelineState> pipelineState = [device newRenderPipelineStateWithDescriptor:renderPipelineDesc

@@ -88,6 +88,10 @@ namespace metal
         // Primitive rendering.
         template <typename IndexType>
         void drawIndexedPrimities(const IndexType *src, NSUInteger count, MTLIndexType indexType);
+        
+        // Shader management.
+        id<MTLFunction> getFragmentShader();
+        id<MTLFunction> getVertexShader();
     };
 } // namespace metal
 

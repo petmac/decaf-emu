@@ -16,6 +16,7 @@ template <typename IndexType>
 void
 Driver::drawIndexedPrimities(const IndexType *src, NSUInteger count, MTLIndexType indexType)
 {
+    uint8_t temp[4096];
     const NSUInteger length = count * sizeof(IndexType);
     id<MTLBuffer> indexBuffer = [commandQueue.device newBufferWithLength:length
                                                                  options:MTLResourceOptionCPUCacheModeDefault];
@@ -23,6 +24,8 @@ Driver::drawIndexedPrimities(const IndexType *src, NSUInteger count, MTLIndexTyp
                    &src[count],
                    static_cast<IndexType *>(indexBuffer.contents),
                    byte_swap<uint32_t>);
+    
+    [renderPass setVertexBytes:temp length:sizeof(temp) atIndex:0];
     [renderPass drawIndexedPrimitives:MTLPrimitiveTypeTriangle
                            indexCount:count
                             indexType:indexType
