@@ -25,7 +25,7 @@ Driver::drawIndexedPrimities(const IndexType *src, NSUInteger count, MTLIndexTyp
                    byte_swap<uint32_t>);
     [renderPass drawIndexedPrimitives:MTLPrimitiveTypeTriangle
                            indexCount:count
-                            indexType:MTLIndexTypeUInt32
+                            indexType:indexType
                           indexBuffer:indexBuffer
                     indexBufferOffset:0];
 }
