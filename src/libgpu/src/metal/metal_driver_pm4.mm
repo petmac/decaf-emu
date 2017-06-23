@@ -155,19 +155,27 @@ Driver::drawIndex2(const DrawIndex2 &data)
     beginRenderPass();
     [pass pushDebugGroup:[NSString stringWithUTF8String:__FUNCTION__]];
     
-    const auto vgt_dma_index_type = getRegister<latte::VGT_DMA_INDEX_TYPE>(latte::Register::VGT_DMA_INDEX_TYPE);
+    const VGT_DMA_INDEX_TYPE vgt_dma_index_type = getRegister<VGT_DMA_INDEX_TYPE>(latte::Register::VGT_DMA_INDEX_TYPE);
     
     // Swap and indexBytes are separate because you can have 32-bit swap,
     //   but 16-bit indices in some cases...  This is also why we pre-swap
     //   the data before intercepting QUAD and POLYGON draws.
     const auto swapMode = vgt_dma_index_type.SWAP_MODE();
     switch (swapMode) {
+        case VGT_DMA_SWAP::SWAP_16_BIT:
+            if (vgt_dma_index_type.INDEX_TYPE() != VGT_INDEX_TYPE::INDEX_16) {
+                decaf_abort(fmt::format("Unexpected INDEX_TYPE {} for VGT_DMA_SWAP_16_BIT", vgt_dma_index_type.INDEX_TYPE()));
+            }
+            drawIndexedPrimities(static_cast<const uint16_t *>(data.addr), data.count, MTLIndexTypeUInt16);
+            break;
+            
         case VGT_DMA_SWAP::SWAP_32_BIT:
-            if (vgt_dma_index_type.INDEX_TYPE() != latte::VGT_INDEX_TYPE::INDEX_32) {
+            if (vgt_dma_index_type.INDEX_TYPE() != VGT_INDEX_TYPE::INDEX_32) {
                 decaf_abort(fmt::format("Unexpected INDEX_TYPE {} for VGT_DMA_SWAP_32_BIT", vgt_dma_index_type.INDEX_TYPE()));
             }
             drawIndexedPrimities(static_cast<const uint32_t *>(data.addr), data.count, MTLIndexTypeUInt32);
             break;
+            
         default:
             decaf_abort(fmt::format("Unimplemented vgt_dma_index_type.SWAP_MODE {}", swapMode));
             break;

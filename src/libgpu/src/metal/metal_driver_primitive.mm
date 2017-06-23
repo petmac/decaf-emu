@@ -30,6 +30,7 @@ Driver::drawIndexedPrimities(const IndexType *src, NSUInteger count, MTLIndexTyp
                     indexBufferOffset:0];
 }
 
+template void Driver::drawIndexedPrimities<uint16_t>(const uint16_t *, NSUInteger, MTLIndexType);
 template void Driver::drawIndexedPrimities<uint32_t>(const uint32_t *, NSUInteger, MTLIndexType);
 
 #endif // DECAF_METAL
