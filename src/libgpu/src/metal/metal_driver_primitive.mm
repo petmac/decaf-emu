@@ -3,6 +3,7 @@
 #include "metal_driver.h"
 
 #include <common/byte_swap.h>
+#include <common/decaf_assert.h>
 
 #include <algorithm>
 
@@ -16,6 +17,8 @@ template <typename IndexType>
 void
 Driver::drawIndexedPrimities(const IndexType *src, NSUInteger count, MTLIndexType indexType)
 {
+    decaf_check(renderPass != nil);
+    
     uint8_t temp[4096];
     const NSUInteger length = count * sizeof(IndexType);
     id<MTLBuffer> indexBuffer = [commandQueue.device newBufferWithLength:length
